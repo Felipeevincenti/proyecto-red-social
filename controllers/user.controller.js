@@ -1,5 +1,6 @@
 // Importacion de dependencias y otras cosas
 const fs = require('fs');
+const path = require('path');
 const bcrypt = require('bcrypt');
 const mongoosPagination = require('mongoose-pagination')
 
@@ -127,6 +128,8 @@ exports.login = (req, res) => {
 
 
 
+
+
 exports.profile = (req, res) => {
 
     const idParam = req.params.id;
@@ -146,6 +149,8 @@ exports.profile = (req, res) => {
             });
         });
 };
+
+
 
 
 
@@ -183,7 +188,6 @@ exports.profiles = (req, res) => {
             })
         })
 }
-
 
 
 
@@ -266,6 +270,9 @@ exports.update = (req, res) => {
 }
 
 
+
+
+
 exports.upload = (req, res) => {
 
     if (!req.file) {
@@ -293,9 +300,6 @@ exports.upload = (req, res) => {
     };
 
     UserModel.findOneAndUpdate({ _id: req.user.id }, { image: req.file.filename }, { new: true })
-        .select({
-            password: false
-        })
         .then((userUpdated) => {
             if (!userUpdated) {
                 return res.status(500).send({
@@ -320,5 +324,30 @@ exports.upload = (req, res) => {
             });
         });
 };
+
+
+
+
+
+exports.avatar = (req, res) => {
+
+    const file = req.params.file;
+    const filePath = "./uploads/avatars/" + file;
+
+    fs.stat(filePath, (err, exists) => {
+
+        if (!exists) {
+            return res.status(404).send({
+                status: "error",
+                message: "No existe la imagen"
+            })
+        }
+
+        return res.sendFile(path.resolve(filePath));
+
+    });
+}
+
+
 
 
