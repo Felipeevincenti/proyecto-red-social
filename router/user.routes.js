@@ -24,7 +24,7 @@ const uploads = multer({ storage });
 // Rutas
 router.post("/register", userController.register);
 router.post("/login", userController.login);
-router.get("/profile:id", authMiddleware.auth, userController.profile);
+router.get("/profile/:id", authMiddleware.auth, userController.profile);
 router.get("/profiles:page?", authMiddleware.auth, userController.profiles);
 router.put("/update", authMiddleware.auth, userController.update);
 router.post("/upload", [authMiddleware.auth, uploads.single("file0")], userController.upload);

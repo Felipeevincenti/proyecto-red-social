@@ -1,8 +1,6 @@
 // Importacion de dependencias y otras cosas
 const mongoose = require('mongoose');
 
-
-
 // Expotacion de funcion para verificar estado de la conexion con la base de datos
 exports.connection = async () => {
     try {

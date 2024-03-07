@@ -6,10 +6,10 @@ const mongoosPagination = require('mongoose-pagination')
 
 // Importacion de servicios
 const jwtService = require('../services/jwt.service');
+const followService = require('../services/follow.service');
 
 // Importacion de modelo de usuario
 const UserModel = require('../models/user.model');
-const userModel = require('../models/user.model');
 
 
 
@@ -136,10 +136,15 @@ exports.profile = (req, res) => {
 
     UserModel.findById(idParam)
         .select({ password: false, role: false })
-        .then((userProfile) => {
+        .then(async (userProfile) => {
+
+            const followInfo = await followService.followThisUser(req.user.id, idParam);
+
             return res.status(200).send({
                 status: "success",
-                userProfile
+                userProfile,
+                following: followInfo.following,
+                follower: followInfo.follower
             });
         })
         .catch((err) => {
@@ -174,11 +179,15 @@ exports.profiles = (req, res) => {
     UserModel.find()
         .paginate(page, itemsPerPage)
         .select({ password: false })
-        .then((usersProfiles) => {
+        .then(async (usersProfiles) => {
+            let followUserIds = await followService.followUserIds(req.user.id)
+
             return res.status(200).send({
                 status: "success",
                 itemsPerPage: itemsPerPage,
-                usersProfiles
+                usersProfiles,
+                userFollowing: followUserIds.following,
+                userFollowMe: followUserIds.followers
             })
         })
         .catch((err) => {
@@ -206,7 +215,7 @@ exports.update = (req, res) => {
     delete userIdentity.image;
 
     // Comprobar si el usuario ya existe
-    userModel.find({
+    UserModel.find({
         $or: [
             { email: userToUpdate.email.toLowerCase() },
             { nick: userToUpdate.nick.toLowerCase() }
