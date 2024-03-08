@@ -1,9 +1,13 @@
 // Importacion de dependencias y otras cosas
+const fs = require('fs');
+const path = require('path')
 const mongoosePagination = require('mongoose-pagination');
 
 // Importacion de modelos
-const publicationModel = require('../models/publication.model');
 const PublicationModel = require('../models/publication.model');
+
+// Imporatcion de servicios
+const followService = require('../services/follow.service')
 
 exports.save = async (req, res) => {
 
@@ -103,7 +107,7 @@ exports.publications = (req, res) => {
 
     let page = 1;
 
-    if (req.params.page) page = req.params.page
+    if (req.params.page) page = req.params.page;
 
     const itemsPerPage = 6;
 
@@ -115,13 +119,13 @@ exports.publications = (req, res) => {
                     status: "error",
                     message: "No se encontro ninguna publicacion"
                 });
-            }
+            };
 
             const total = publications.length;
 
             PublicationModel.find({ "user": paramsId })
                 .sort("-created_at") // Hace que se ordenen de más nueva a más vieja
-                .populate("user", "-password -__v -role")
+                .populate("user", "-password -__v -role -email")
                 .paginate(page, itemsPerPage)
                 .then((publications) => {
                     return res.status(200).send({
@@ -137,13 +141,119 @@ exports.publications = (req, res) => {
                         status: "success",
                         message: "Error al buscar publicaciones"
                     });
-                })
+                });
         })
         .catch((err) => {
             return res.status(200).send({
                 status: "success",
                 message: "Error al buscar publicaciones"
             });
-        })
+        });
+};
 
+
+
+
+
+exports.upload = (req, res) => {
+
+    const publicationId = req.params.id;
+
+    if (!req.file) {
+        return res.status(404).send({
+            status: "error",
+            message: "No se recibio ninguna imagen"
+        });
+    };
+
+    // Obtener la extension del archivo
+    const image = req.file.originalname;
+    const imageSplit = image.split(".");
+    const ext = imageSplit[imageSplit.length - 1].toLowerCase();
+
+    if (ext != 'png' && ext != 'jpg' && ext != 'jpeg' && ext != 'gif') {
+
+        // Eliminar archivo subido 
+        const filePath = req.file.path;
+        const fileDelete = fs.unlinkSync(filePath);
+
+        return res.status(400).send({
+            status: "error",
+            message: "Extension inválida"
+        });
+    };
+
+    PublicationModel.findOneAndUpdate({ "user": req.user.id, "_id": publicationId }, { file: req.file.filename }, { new: true })
+        .then((publicationUpdated) => {
+            if (!publicationUpdated) {
+                return res.status(500).send({
+                    status: "error",
+                    message: "El usuario no existe"
+                });
+            };
+            return res.status(200).send({
+                status: "success",
+                message: "Subida de imagen",
+                publicationUpdated: publicationUpdated
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send({
+                status: "error",
+                message: "Error al actualizar la imagen",
+                err: err
+            });
+        });
+};
+
+
+
+
+
+exports.media = (req, res) => {
+
+    const file = req.params.file;
+    const filePath = "./uploads/publications/" + file;
+
+    fs.stat(filePath, (err, exists) => {
+
+        if (!exists) {
+            return res.status(404).send({
+                status: "error",
+                message: "No existe la imagen"
+            });
+        };
+
+        return res.sendFile(path.resolve(filePath));
+
+    });
+};
+
+
+
+
+
+exports.feed = async (req, res) => {
+
+    try {
+        const myFollows = await followService.followUserIds(req.user.id);
+
+        const publications = await PublicationModel.find({ user: myFollows.following })
+            .populate("user", "-password -role -__v")
+            .sort("-created_at")
+
+        return res.status(200).send({
+            status: "success",
+            message: "Feed de publicaciones",
+            following: myFollows.following,
+            publications
+        });
+    }
+    catch (err) {
+        return res.status(500).send({
+            status: "error",
+            message: "No se pudo cargar el Feed"
+        });
+    }
 };

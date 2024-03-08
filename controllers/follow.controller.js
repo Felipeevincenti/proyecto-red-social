@@ -117,7 +117,7 @@ exports.following = (req, res) => {
 
             // Luego, realizamos la consulta paginada
             return FollowModel.find({ user: userId })
-                .populate("user followed", "-password -role -__v")
+                .populate("user followed", "-password -role -__v -email")
                 .skip((page - 1) * itemsPerPage)
                 .limit(itemsPerPage);
         })
@@ -168,7 +168,7 @@ exports.followers = (req, res) => {
 
             // Luego, realizamos la consulta paginada
             return FollowModel.find({ followed: userId })
-                .populate("user", "-password -role -__v")
+                .populate("user", "-password -role -__v -email")
                 .skip((page - 1) * itemsPerPage)
                 .limit(itemsPerPage);
         })

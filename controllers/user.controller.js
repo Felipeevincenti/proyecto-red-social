@@ -10,6 +10,8 @@ const followService = require('../services/follow.service');
 
 // Importacion de modelo de usuario
 const UserModel = require('../models/user.model');
+const FollowModel = require('../models/follow.model');
+const PublicationModel = require('../models/publication.model');
 
 
 
@@ -178,8 +180,9 @@ exports.profiles = (req, res) => {
 
     UserModel.find()
         .paginate(page, itemsPerPage)
-        .select({ password: false })
+        .select("-password -email -role -__v")
         .then(async (usersProfiles) => {
+
             let followUserIds = await followService.followUserIds(req.user.id)
 
             return res.status(200).send({
@@ -239,6 +242,8 @@ exports.update = (req, res) => {
             if (userToUpdate.password) {
                 const hash = await bcrypt.hash(userToUpdate.password, 10);
                 userToUpdate.password = hash;
+            } else {
+                delete userToUpdate.password;
             }
 
             try {
@@ -360,3 +365,31 @@ exports.avatar = (req, res) => {
 
 
 
+
+exports.counters = async (req, res) => {
+
+    let userId = req.user.id;
+
+    if (req.params.id) {
+        userId = req.params.id;
+    };
+
+    try {
+        const following = await FollowModel.countDocuments({ "user": userId })
+        const followed = await FollowModel.countDocuments({ "followed": userId });
+        const publications = await PublicationModel.countDocuments({ "user": userId });
+
+        return res.status(200).send({
+            userId,
+            following: following,
+            followed: followed,
+            publications: publications
+        })
+    }
+    catch (err) {
+        return res.status(500).send({
+            status: "error",
+            message: "Error al contar los datos"
+        })
+    }
+}
