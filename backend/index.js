@@ -1,6 +1,7 @@
 // Importacion de dependencias y otras cosas 
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser')
 const app = express();
 
 // Importacion de rutas
@@ -15,6 +16,10 @@ connectionDb.connection();
 const puerto = 3000;
 
 app.use(cors());
+
+// Aumentar el límite de carga a 50MB
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 // Modificacion de los datos enviados por body
 app.use(express.json());

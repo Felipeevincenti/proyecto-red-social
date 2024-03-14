@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <form (ngSubmit)="login()">
+        <input type="email" placeholder="correo" [(ngModel)]="usuario.email" name="email"><br><br>
+        <input type="password" placeholder="contraseña" [(ngModel)]="usuario.password" name="password"><br><br>
+        <input type="submit" value="Iniciar Sesión">
+    </form>
+</body>
+
+</html>

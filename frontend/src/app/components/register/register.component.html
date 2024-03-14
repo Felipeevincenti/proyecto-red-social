@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+
+<body>
+    <form (ngSubmit)="registrarUsuario()">
+        <input type="text" placeholder="nombre" [(ngModel)]="usuario.name" name="nombre"><br><br>
+        <input type="text" placeholder="apellido" [(ngModel)]="usuario.surname" name="apellido"><br><br>
+        <input type="text" placeholder="biografia" [(ngModel)]="usuario.bio" name="biografia"><br><br>
+        <input type="text" placeholder="nick" [(ngModel)]="usuario.nick" name="nick"><br><br>
+        <input type="email" placeholder="correo" [(ngModel)]="usuario.email" name="correo"><br><br>
+        <input type="password" placeholder="contraseña" [(ngModel)]="usuario.password" name="contrasena"><br><br>
+        <select [(ngModel)]="usuario.role" name="role">
+            <option value="">Seleccione un rol</option>
+            <option value="Influencer">Influencer</option>
+            <option value="Docente">Docente</option>
+            <option value="Programador">Programador</option>
+        </select><br><br>
+        <input type="submit" value="Registrarse">
+    </form>
+</body>
+
+</html>

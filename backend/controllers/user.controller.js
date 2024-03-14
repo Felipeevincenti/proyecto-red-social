@@ -38,7 +38,7 @@ exports.register = async (req, res) => {
         .then(async (users) => {
 
             if (users && users.length >= 1) {
-                return res.status(200).send({
+                return res.status(404).send({
                     status: "error",
                     message: `El email o el nick ya existen`
                 });
@@ -50,7 +50,6 @@ exports.register = async (req, res) => {
             const newUser = new UserModel(params);
 
             newUser.save()
-
                 .then((userStored) => {
                     if (userStored) {
                         return res.status(200).send({
@@ -63,6 +62,7 @@ exports.register = async (req, res) => {
 
                 .catch((err) => {
                     return res.status(500).send({
+                        err,
                         status: "error",
                         message: "Error al guardar el usuario"
                     })
@@ -300,7 +300,6 @@ exports.upload = (req, res) => {
     const image = req.file.originalname;
     const imageSplit = image.split(".");
     const ext = imageSplit[imageSplit.length - 1].toLowerCase();
-
     if (ext != 'png' && ext != 'jpg' && ext != 'jpeg' && ext != 'gif') {
 
         // Eliminar archivo subido 
@@ -321,8 +320,6 @@ exports.upload = (req, res) => {
                     message: "El usuario no existe"
                 });
             };
-            console.log(req.file);
-            console.log(req.file.filename);
             return res.status(200).send({
                 status: "success",
                 message: "Subida de imagen",
@@ -344,7 +341,6 @@ exports.upload = (req, res) => {
 
 
 exports.avatar = (req, res) => {
-
     const file = req.params.file;
     const filePath = "./uploads/avatars/" + file;
 

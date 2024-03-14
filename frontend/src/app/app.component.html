@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Red Social</title>
+</head>
+
+<body>
+
+  <header id="header">
+
+    <a class="header__logo" routerLink="/feed">Red Social</a>
+
+    <ul class="header__ingresar">
+
+      <ng-container *ngIf="!usuariosService.loggedIn(); else loggedInTemplate">
+        <li class="ingresar__li"> <a class="ingresar__link" routerLink="/register">Register</a></li>
+        <li class="ingresar__li"> <a class="ingresar__link" routerLink="/login">Login</a></li>
+      </ng-container>
+
+      <ng-template #loggedInTemplate>
+        <li class="ingresar__li"><a class="ingresar__link" routerLink="/login"
+            (click)="usuariosService.logOut()">LogOut</a>
+        </li>
+      </ng-template>
+
+    </ul>
+
+  </header>
+
+  <div class="container-routeroutlet">
+    <router-outlet></router-outlet>
+  </div>
+
+</body>
+
+</html>

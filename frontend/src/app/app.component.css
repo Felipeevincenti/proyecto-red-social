@@ -1,0 +1,45 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#header {
+    width: 100%;
+    height: 100px;
+    padding: 0px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgb(218, 194, 254);
+}
+
+.header__logo {
+    font-weight: bold;
+    font-size: 30px;
+    text-decoration: none;
+    text-shadow: 0px 1px 2px #000;
+    color: rgb(253, 135, 180);
+}
+
+.header__ingresar {
+    display: flex;
+}
+
+.ingresar__li {
+    margin: 0px 20px;
+    list-style: none;
+}
+
+.ingresar__link {
+    font-size: 20px;
+    text-decoration: none;
+    text-shadow: 0px 1px 2px #000;
+    color: #fff;
+}
+
+.container-routeroutlet {
+    margin-top: 200px;
+    /* background: red; */
+}
