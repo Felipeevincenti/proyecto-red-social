@@ -9,17 +9,111 @@
 
 <body>
 
-    <form (ngSubmit)="subirImagen()">
-        <input type="file" (change)="onFileSelected($event)" name="image"><br><br>
-        <input type="submit">
-    </form>
-    <br>
-    <img width="200px" src="{{url+'/user/avatar/'+usuario.image}}" alt="">
+    <main id="main" (scroll)="onScroll($event)">
 
-    <p>Nombre: {{usuario.name}}</p>
-    <p>Apellido: {{usuario.surname}}</p>
-    <p>Nick: {{usuario.nick}}</p>
+        <div class="info-container">
 
+            <div class="info__avatar-container">
+                <div class="info__img-container">
+                    <img class="info__img" src="{{url+'/user/avatar/'+usuario.image}}" alt="">
+                </div>
+                <button class="info__cambiarImg" (click)="abrirModal($event)">Change Image</button>
+            </div>
+
+            <div class=" info__data-container">
+                <p class="info__data info__data-nick">@{{usuario.nick}} <span class="info__data-role"
+                        *ngIf="usuario.role">({{usuario.role}})</span></p>
+                <p class="info__data info__data-bio">{{usuario.bio}}</p>
+                <p class="info__data info__data-bio">Following: {{follows.following}}</p>
+                <p class="info__data info__data-bio">Followers: {{follows.followed}}</p>
+                <button class="info__editar" (click)="abrirModal($event)">Edit profile</button>
+            </div>
+
+        </div>
+
+        <div class="publicaciones-container">
+            <div class="publicaciones__publicacion" *ngFor="let publication of listaPublicaciones">
+                <!-- <p>{{ publication.text }}</p> -->
+                <img src="{{url+'/publication/media/'+publication.file}}" alt="">
+            </div>
+            <p class="publicaciones__nueva" (click)="abrirModal($event)">Add Post</p>
+        </div>
+
+    </main>
+
+    <div id="cambiarImg-modal">
+
+        <form class="cambiarImg__form" (ngSubmit)="subirImagenAvatar()">
+
+            <span class="cambiarImg__span" (click)="cerrarModal($event)">X</span>
+
+            <label class="cambiarImg__label" class="cambiarImg__label" for="cambiarImg__input">Select
+                Image</label>
+
+            <input id="cambiarImg__input" class="cambiarImg__input" type="file" accept=".png, .jpeg, .jpg, .png"
+                (change)="obtenerImagenAvatar($event)" name="image">
+
+            <input class="cambiarImg__submit" type="submit" value="Change" (click)="cerrarModal($event)">
+
+        </form>
+
+    </div>
+
+    <div id="editarPerfil-modal">
+
+        <form class="editarPerfil__form" (ngSubmit)="editarPerfil()">
+
+            <span class="editarPerfil__span" (click)="cerrarModal($event)">X</span>
+
+            <label class="editarPerfil__label" for="nombre">Name:</label>
+            <input type="text" class="editarPerfil__input" placeholder="nombre" [(ngModel)]="usuario.name"
+                name="nombre">
+
+            <label class="editarPerfil__label" for="nombre">Surname:</label>
+            <input type="text" class="editarPerfil__input" placeholder="apellido" [(ngModel)]="usuario.surname"
+                name="apellido">
+
+            <label class="editarPerfil__label" for="nombre">Biography:</label>
+            <input type="text" class="editarPerfil__input" placeholder="biografia" [(ngModel)]="usuario.bio"
+                name="biografia">
+
+            <label class="editarPerfil__label" for="nombre">Nick:</label>
+            <input type="text" class="editarPerfil__input" placeholder="nick" [(ngModel)]="usuario.nick" name="nick">
+
+            <label class="editarPerfil__label" for="role">Role:</label>
+            <select [(ngModel)]="usuario.role" class="editarPerfil__input" name="role">
+                <option value="">Select a role</option>
+                <option value="role 1">Role 1</option>
+                <option value="role 2">Role 2</option>
+                <option value="role 3">Role 3</option>
+            </select>
+
+            <input class="editarPerfil__submit" type="submit" value="Edit" (click)="cerrarModal($event)">
+
+        </form>
+
+    </div>
+
+    <div id="crearPublicacion-modal">
+
+        <form class="crearPublicacion__form" (ngSubmit)="crearPublicacion()">
+
+            <span class="crearPublicacion__span" (click)="cerrarModal($event)">X</span>
+
+            <label class="crearPublicacion__label" class="crearPublicacion__label" for="crearPublicacion__input">Select
+                Image</label>
+
+            <input id="crearPublicacion__input" class="crearPublicacion__input" type="file"
+                accept=".png, .jpeg, .jpg, .png" (change)="obtenerImagenPublicacion($event)" name="image">
+
+            <textarea class="crearPublicacion__textarea" placeholder="Publication description" name="text"
+                [(ngModel)]="infoPublicacion.text"></textarea>
+
+            <input class="crearPublicacion__submit" type="submit" value="Create" (click)="cerrarModal($event)">
+
+        </form>
+
+    </div>
 </body>
 
 </html>

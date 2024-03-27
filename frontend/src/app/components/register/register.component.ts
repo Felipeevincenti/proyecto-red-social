@@ -12,12 +12,11 @@ export class RegisterComponent {
   public usuario = {
     name: '',
     surname: '',
-    bio: '',
     nick: '',
     email: '',
     password: '',
     role: '',
-    image: null // Cambiar de '' a null
+    image: 'default.png'
   };
 
   constructor(

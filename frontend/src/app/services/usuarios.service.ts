@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GlobalService } from './global.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,29 @@ import { GlobalService } from './global.service';
 export class UsuariosService {
 
   constructor(
+    private router: Router,
     private http: HttpClient,
     private globalService: GlobalService,
   ) { }
 
+  public token = localStorage.getItem('token');
+  public headers = new HttpHeaders({ 'authorization': `${this.token}` });
+
+  public vaciarUsuario(usuario: any) {
+    usuario = {
+      name: '',
+      surname: '',
+      bio: '',
+      nick: '',
+      email: '',
+      password: '',
+      role: '',
+      image: 'default.png'
+    };
+    return usuario
+  }
+
   public registrarUsuario(usuario: any) {
-    console.log("Desde el register");
-    console.log(usuario);
     return this.http.post<any>(`${this.globalService.URL}/user/register`, usuario);
   }
 
@@ -23,9 +40,11 @@ export class UsuariosService {
   }
 
   public profile(id: any) {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({ 'authorization': `${token}` });
-    return this.http.get<any>(`${this.globalService.URL}/user/profile/${id}`, { headers: headers });
+    return this.http.get<any>(`${this.globalService.URL}/user/profile/${id}`, { headers: this.headers });
+  }
+
+  public update(newData: any) {
+    return this.http.put<any>(`${this.globalService.URL}/user/update`, newData, { headers: this.headers });
   }
 
   public logOut() {
@@ -38,12 +57,10 @@ export class UsuariosService {
   }
 
   public upload(file: object) {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({ 'authorization': `${token}` });
-    return this.http.post<any>(`${this.globalService.URL}/user/upload`, file, { headers: headers });
+    return this.http.post<any>(`${this.globalService.URL}/user/upload`, file, { headers: this.headers });
   }
 
-  // public avatar(filename: string) {
-  //   return this.http.get<any>(`${this.globalService.URL}/user/avatar/${filename}`);
-  // }
+  public counters() {
+    return this.http.get<any>(`${this.globalService.URL}/user/counters`, { headers: this.headers });
+  }
 }

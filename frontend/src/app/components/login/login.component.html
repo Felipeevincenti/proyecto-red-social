@@ -8,10 +8,17 @@
 </head>
 
 <body>
-    <form (ngSubmit)="login()">
-        <input type="email" placeholder="correo" [(ngModel)]="usuario.email" name="email"><br><br>
-        <input type="password" placeholder="contraseña" [(ngModel)]="usuario.password" name="password"><br><br>
-        <input type="submit" value="Iniciar Sesión">
+    <form class="form__login" (ngSubmit)="login()">
+
+        <label class="login__label" for="">Email:</label>
+        <input class="login__input" type="email" placeholder="email" [(ngModel)]="usuario.email" name="email">
+
+        <label class="login__label" for="">Password:</label>
+        <input class="login__input" type="password" placeholder="password" [(ngModel)]="usuario.password"
+            name="password">
+
+        <input class="login__input-submit" type="submit" value="Log in">
+
     </form>
 </body>
 

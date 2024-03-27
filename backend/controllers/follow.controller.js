@@ -1,6 +1,3 @@
-// Importacion de dependencias y otras cosas
-const mongoosePaginate = require('mongoose-pagination')
-
 // Importacion de servicios
 const followService = require('../services/follow.service')
 
@@ -103,24 +100,10 @@ exports.following = (req, res) => {
 
     if (req.params.id) userId = req.params.id;
 
-    let page = 1;
-    if (req.params.page) page = req.params.page;
-
-    const itemsPerPage = 5;
-
-    let totalFollows;
-
     // Primero, obtenemos la cantidad total de follows
-    FollowModel.countDocuments({ user: userId })
-        .then((total) => {
-            totalFollows = total;
+    FollowModel.find({ user: userId })
+        .populate("user followed", "-password -role -__v -email")
 
-            // Luego, realizamos la consulta paginada
-            return FollowModel.find({ user: userId })
-                .populate("user followed", "-password -role -__v -email")
-                .skip((page - 1) * itemsPerPage)
-                .limit(itemsPerPage);
-        })
         .then(async (follows) => {
 
             let followUserIds = await followService.followUserIds(req.user.id);
@@ -130,8 +113,6 @@ exports.following = (req, res) => {
                 userId,
                 message: "Id sigue a estos usuarios (seguidos)",
                 follows,
-                total: totalFollows,
-                pages: Math.ceil(totalFollows / itemsPerPage),
                 userFollowing: followUserIds.following,
                 userFollowMe: followUserIds.followers,
             });
@@ -154,24 +135,10 @@ exports.followers = (req, res) => {
 
     if (req.params.id) userId = req.params.id;
 
-    let page = 1;
-    if (req.params.page) page = req.params.page;
-
-    const itemsPerPage = 5;
-
-    let totalFollows;
-
     // Primero, obtenemos la cantidad total de follows
-    FollowModel.countDocuments({ user: userId })
-        .then((total) => {
-            totalFollows = total;
+    FollowModel.find({ user: userId })
+        .populate("user", "-password -role -__v -email")
 
-            // Luego, realizamos la consulta paginada
-            return FollowModel.find({ followed: userId })
-                .populate("user", "-password -role -__v -email")
-                .skip((page - 1) * itemsPerPage)
-                .limit(itemsPerPage);
-        })
         .then(async (follows) => {
 
             let followUserIds = await followService.followUserIds(req.user.id);
@@ -181,8 +148,6 @@ exports.followers = (req, res) => {
                 userId,
                 message: "Id me siguen estos usuarios",
                 follows,
-                total: totalFollows,
-                pages: Math.ceil(totalFollows / itemsPerPage),
                 userFollowing: followUserIds.following,
                 userFollowMe: followUserIds.followers
             });

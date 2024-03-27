@@ -137,16 +137,16 @@ exports.profile = (req, res) => {
     const idParam = req.params.id;
 
     UserModel.findById(idParam)
-        .select({ password: false, role: false })
+        .select({ password: false })
         .then(async (userProfile) => {
 
             const followInfo = await followService.followThisUser(req.user.id, idParam);
-
+            console.log(req.user.id + "  " + idParam);
             return res.status(200).send({
                 status: "success",
                 userProfile,
                 following: followInfo.following,
-                follower: followInfo.follower
+                followers: followInfo.follower
             });
         })
         .catch((err) => {
@@ -292,11 +292,11 @@ exports.upload = (req, res) => {
     if (!req.file) {
         return res.status(404).send({
             status: "error",
-            message: "No se recibio ninguna imagen"
+            message: "No se recibió ninguna imagen"
         });
-    };
+    }
 
-    // Obtener la extension del archivo
+    // Obtener la extensión del archivo
     const image = req.file.originalname;
     const imageSplit = image.split(".");
     const ext = imageSplit[imageSplit.length - 1].toLowerCase();
@@ -308,21 +308,38 @@ exports.upload = (req, res) => {
 
         return res.status(400).send({
             status: "error",
-            message: "Extension inválida"
+            message: "Extensión inválida"
         });
-    };
+    }
 
-    UserModel.findOneAndUpdate({ _id: req.user.id }, { image: req.file.filename }, { new: true })
-        .then((userUpdated) => {
-            if (!userUpdated) {
+    UserModel.findById(req.user.id)
+        .then((user) => {
+            if (!user) {
                 return res.status(500).send({
                     status: "error",
                     message: "El usuario no existe"
                 });
-            };
+            }
+
+            // Si el usuario ya tiene una imagen, eliminarla
+            if (user.image && user.image != "default.png") {
+                const imagePath = path.join(__dirname, '../uploads/avatars', user.image);
+                fs.unlinkSync(imagePath);
+            }
+
+            // Actualizar la imagen del usuario
+            return UserModel.findByIdAndUpdate(req.user.id, { image: req.file.filename }, { new: true });
+        })
+        .then((userUpdated) => {
+            if (!userUpdated) {
+                return res.status(500).send({
+                    status: "error",
+                    message: "Error al actualizar la imagen"
+                });
+            }
             return res.status(200).send({
                 status: "success",
-                message: "Subida de imagen",
+                message: "Imagen actualizada exitosamente",
                 user: userUpdated
             });
         })
@@ -365,10 +382,6 @@ exports.avatar = (req, res) => {
 exports.counters = async (req, res) => {
 
     let userId = req.user.id;
-
-    if (req.params.id) {
-        userId = req.params.id;
-    };
 
     try {
         const following = await FollowModel.countDocuments({ "user": userId })

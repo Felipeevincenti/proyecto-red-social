@@ -8,21 +8,53 @@
 </head>
 
 <body>
-    <form (ngSubmit)="registrarUsuario()">
-        <input type="text" placeholder="nombre" [(ngModel)]="usuario.name" name="nombre"><br><br>
-        <input type="text" placeholder="apellido" [(ngModel)]="usuario.surname" name="apellido"><br><br>
-        <input type="text" placeholder="biografia" [(ngModel)]="usuario.bio" name="biografia"><br><br>
-        <input type="text" placeholder="nick" [(ngModel)]="usuario.nick" name="nick"><br><br>
-        <input type="email" placeholder="correo" [(ngModel)]="usuario.email" name="correo"><br><br>
-        <input type="password" placeholder="contraseña" [(ngModel)]="usuario.password" name="contrasena"><br><br>
-        <select [(ngModel)]="usuario.role" name="role">
-            <option value="">Seleccione un rol</option>
-            <option value="Influencer">Influencer</option>
-            <option value="Docente">Docente</option>
-            <option value="Programador">Programador</option>
-        </select><br><br>
-        <input type="submit" value="Registrarse">
+    <form class="form__register" (ngSubmit)="registrarUsuario()">
+
+        <div class="register__inputs-group">
+            <div class="register__inputs-container">
+                <label class="register__label" for="">Name:</label>
+                <input class="register__input" type="text" placeholder="Name" [(ngModel)]="usuario.name" name="nombre">
+            </div>
+            <div class="register__inputs-container">
+                <label class="register__label" for="">Surname:</label>
+                <input class="register__input" type="text" placeholder="Surname" [(ngModel)]="usuario.surname"
+                    name="apellido">
+            </div>
+        </div>
+
+        <div class="register__inputs-group">
+            <div class="register__inputs-container">
+                <label class="register__label" for="">Nick:</label>
+                <input class="register__input" type="text" placeholder="Nick" [(ngModel)]="usuario.nick" name="nick">
+            </div>
+            <div class="register__inputs-container">
+                <label class="register__label" for="">Email:</label>
+                <input class="register__input" type="email" placeholder="Email" [(ngModel)]="usuario.email"
+                    name="correo">
+            </div>
+        </div>
+
+        <div class="register__inputs-group">
+            <div class="register__inputs-container">
+                <label class="register__label" for="">Password:</label>
+                <input class="register__input" type="password" placeholder="Password" [(ngModel)]="usuario.password"
+                    name="contrasena">
+            </div>
+            <div class="register__inputs-container">
+                <label class="register__label" for="">Role:</label>
+                <select class="register__input" [(ngModel)]="usuario.role" name="role">
+                    <option value="">Select a role</option>
+                    <option value="role 1">Role 1</option>
+                    <option value="role 2">Role 2</option>
+                    <option value="role 3">Role 3</option>
+                </select>
+            </div>
+        </div>
+
+        <input class="register__input-submit" type="submit" value="Register">
+
     </form>
+
 </body>
 
 </html>

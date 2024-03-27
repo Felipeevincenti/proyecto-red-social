@@ -36,6 +36,7 @@ exports.followUserIds = async (identityUserId) => {
 
 
 exports.followThisUser = async (identityUserId, profileUserId) => {
+    
     let following = await FollowModel.findOne({ "user": identityUserId, "followed": profileUserId })
 
     let follower = await FollowModel.findOne({ "user": profileUserId, "followed": identityUserId })

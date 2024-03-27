@@ -11,8 +11,8 @@ const authMiddleware = require('../middlewares/auth.middleware');
 // Rutas
 router.post("/follow", authMiddleware.auth, followController.follow);
 router.delete("/unfollow/:id", authMiddleware.auth, followController.unfollow);
-router.get("/following/:id?/:page?", authMiddleware.auth, followController.following);
-router.get("/followers/:id?/:page?", authMiddleware.auth, followController.followers);
+router.get("/following/:id?", authMiddleware.auth, followController.following);
+router.get("/followers/:id?", authMiddleware.auth, followController.followers);
 
 // Exportacion de rutas
 module.exports = router;

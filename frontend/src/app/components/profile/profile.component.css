@@ -1,0 +1,359 @@
+/** ------------  GENERAL ------------ **/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+
+
+/** ------------  PERFIL ------------ **/
+
+#main {
+    width: 960px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.info-container {
+    padding: 50px 0px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.info__avatar-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.info__img-container {
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.info__img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.info__cambiarImg {
+    cursor: pointer;
+    color: #999;
+    border: none;
+    background: none;
+}
+
+.info__data-container {
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+}
+
+.info__data {
+    margin: 5px;
+}
+
+.info__data-nick {
+    font-size: 24px;
+}
+
+.info__data-role {
+    margin: 0px 10px;
+    font-size: 12px;
+}
+
+.info__editar {
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(13, 13, 144);
+    border: none;
+    background: none;
+    width: fit-content;
+    margin: 10px 0px 0px 5px;
+}
+
+
+
+
+
+/** ------------  PUBLICACIONES ------------ **/
+
+.publicaciones-container {
+    border-top: 1px solid #aaa;
+    position: relative;
+    padding: 50px 20px 25px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.publicaciones__publicacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000;
+    width: 300px;
+    height: 300px;
+    background: #444;
+}
+
+.publicaciones__publicacion:hover {
+    filter: brightness(.5);
+    cursor: pointer;
+}
+
+.publicaciones__publicacion img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.publicaciones__nueva {
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    width: 150px;
+    margin: 0 auto;
+    padding: 5px 20px;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    border-radius: 10px;
+    background: rgb(0, 118, 0);
+    transition: background-color .3s;
+}
+
+.publicaciones__nueva:hover {
+    cursor: pointer;
+    background: rgb(0, 99, 0);
+    transition: background-color .3s;
+}
+
+
+
+
+
+/** ------------  MODAL CAMBIAR IMAGEN ------------ **/
+
+#cambiarImg-modal {
+    position: absolute;
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+    background: #0005;
+}
+
+.cambiarImg__form {
+    width: 800px;
+    height: 400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    position: absolute;
+    top: 200px;
+    left: 0;
+    right: 0;
+    background: #0005;
+}
+
+.cambiarImg__span {
+    cursor: pointer;
+    color: #fff;
+    font-size: 25px;
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    filter: drop-shadow(0px 0px 1px #000);
+}
+
+.cambiarImg__label {
+    cursor: pointer;
+    color: #fff;
+    padding: 20px 50px;
+    border: none;
+    border-radius: 10px;
+    background: rgb(58, 58, 216);
+}
+
+.cambiarImg__input {
+    display: none;
+}
+
+.cambiarImg__submit {
+    cursor: pointer;
+    color: #fff;
+    padding: 20px 50px;
+    border: none;
+    border-radius: 10px;
+    background: rgb(19, 124, 19);
+}
+
+
+
+
+
+/** ------------  MODAL EDITAR PERFIL ------------ **/
+
+#editarPerfil-modal {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #0008;
+}
+
+.editarPerfil__form {
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+    padding: 0 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: #0005;
+}
+
+.editarPerfil__span {
+    cursor: pointer;
+    font-size: 25px;
+    color: #fff;
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    filter: drop-shadow(0px 0px 1px #000);
+}
+
+.editarPerfil__label {
+    color: #eee;
+    margin: 5px 20px;
+}
+
+.editarPerfil__input {
+    width: 200px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: #ddd;
+}
+
+.editarPerfil__submit {
+    cursor: pointer;
+    color: #fff;
+    margin: 0 auto;
+    padding: 20px 50px;
+    border: none;
+    border-radius: 10px;
+    background: rgb(19, 124, 19);
+}
+
+
+
+
+
+/** ------------  MODAL AGREGAR PUBLICACION ------------ **/
+
+#crearPublicacion-modal {
+    position: absolute;
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+    background: #0005;
+}
+
+.crearPublicacion__form {
+    width: 800px;
+    height: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    position: absolute;
+    top: 200px;
+    left: 0;
+    right: 0;
+    background: #0005;
+}
+
+.crearPublicacion__span {
+    cursor: pointer;
+    color: #fff;
+    font-size: 25px;
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    filter: drop-shadow(0px 0px 1px #000);
+}
+
+.crearPublicacion__label {
+    cursor: pointer;
+    color: #fff;
+    padding: 20px 50px;
+    border: none;
+    border-radius: 10px;
+    background: rgb(58, 58, 216);
+}
+
+.crearPublicacion__input {
+    display: none;
+}
+
+.crearPublicacion__textarea {
+    width: 500px;
+    height: 100px;
+    padding: 10px;
+    resize: none;
+    border: none;
+    outline: none;
+    background: #ddd;
+}
+
+.crearPublicacion__submit {
+    cursor: pointer;
+    color: #fff;
+    padding: 20px 50px;
+    border: none;
+    border-radius: 10px;
+    background: rgb(19, 124, 19);
+}

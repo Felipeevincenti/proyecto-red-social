@@ -9,6 +9,9 @@ const PublicationModel = require('../models/publication.model');
 // Imporatcion de servicios
 const followService = require('../services/follow.service')
 
+
+
+
 exports.save = async (req, res) => {
 
     const params = req.body;
@@ -19,6 +22,7 @@ exports.save = async (req, res) => {
             message: "Faltan enviar datos"
         });
     };
+
     const newPublication = new PublicationModel(params);
     newPublication.user = req.user.id;
     newPublication.save()
@@ -105,46 +109,24 @@ exports.publications = (req, res) => {
 
     const paramsId = req.params.id;
 
-    let page = 1;
-
-    if (req.params.page) page = req.params.page;
-
-    const itemsPerPage = 6;
-
     PublicationModel.find({ "user": paramsId })
+        .sort("-created_at")
+        .populate("user", "-password -__v -role -email")
         .then((publications) => {
-
             if (publications.length <= 0) {
-                return res.status(404).send({
+                return res.status(200).send({
                     status: "error",
                     message: "No se encontro ninguna publicacion"
                 });
             };
-
-            const total = publications.length;
-
-            PublicationModel.find({ "user": paramsId })
-                .sort("-created_at") // Hace que se ordenen de más nueva a más vieja
-                .populate("user", "-password -__v -role -email")
-                .paginate(page, itemsPerPage)
-                .then((publications) => {
-                    return res.status(200).send({
-                        status: "success",
-                        message: "Publicaciónes de usuario con sesion iniciada",
-                        total,
-                        pages: Math.ceil(total / itemsPerPage),
-                        publications
-                    });
-                })
-                .catch((err) => {
-                    return res.status(200).send({
-                        status: "success",
-                        message: "Error al buscar publicaciones"
-                    });
-                });
+            return res.status(200).send({
+                status: "success",
+                message: "Publicaciónes de usuario con sesion iniciada",
+                publications
+            });
         })
         .catch((err) => {
-            return res.status(200).send({
+            return res.status(500).send({
                 status: "success",
                 message: "Error al buscar publicaciones"
             });

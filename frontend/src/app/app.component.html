@@ -11,7 +11,7 @@
 
   <header id="header">
 
-    <a class="header__logo" routerLink="/feed">Red Social</a>
+    <a class="header__logo" routerLink="/feed" (click)="cerrar()">Social Network</a>
 
     <ul class="header__ingresar">
 
@@ -21,12 +21,20 @@
       </ng-container>
 
       <ng-template #loggedInTemplate>
-        <li class="ingresar__li"><a class="ingresar__link" routerLink="/login"
-            (click)="usuariosService.logOut()">LogOut</a>
-        </li>
+
+        <div class="ingresar__img-container">
+          <img class="ingresar__img" src="{{url+'/user/avatar/'+usuario.image}}" alt="" (click)="desplegar()">
+        </div>
+
       </ng-template>
 
     </ul>
+
+    <div class="ingresar__despliegue" [class.desplegar]="desplegado">
+      <li class="despliegue__li"><a class="despliegue__link" routerLink="/profile" (click)="cerrar()">Profile</a></li>
+      <li class="despliegue__li"><a class="despliegue__link" routerLink="/login"
+          (click)="logOut(); cerrar()">LogOut</a></li>
+    </div>
 
   </header>
 

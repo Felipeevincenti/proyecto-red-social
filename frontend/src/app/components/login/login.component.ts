@@ -9,25 +9,30 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 })
 export class LoginComponent {
 
-  public usuario = {
-    email: '@gmail.com',
-    password: "contraseña"
-  };
-
   constructor(
     private usuariosService: UsuariosService,
     private router: Router
   ) { }
+
+  public usuario = {
+    email: '@gmail.com',
+    password: "contraseña"
+  };
 
   public login() {
     this.usuariosService.login(this.usuario).subscribe(
       res => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('id', res.user.id);
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/profile'])
+          .then(() => {
+            location.reload();
+          })
+          .catch((err) => {
+            console.log(err);
+          })
       },
       err => console.log(err)
     )
   }
-
 }

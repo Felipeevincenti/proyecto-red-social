@@ -25,7 +25,7 @@ const uploads = multer({ storage });
 router.post("/save", authMiddleware.auth, publicationController.save);
 router.get("/details/:id", authMiddleware.auth, publicationController.details);
 router.delete("/delete/:id", authMiddleware.auth, publicationController.remove);
-router.get("/publications/:id/:page?", authMiddleware.auth, publicationController.publications);
+router.get("/publications/:id", authMiddleware.auth, publicationController.publications);
 router.post("/upload/:id", [authMiddleware.auth, uploads.single("file0")], publicationController.upload);
 router.get("/media/:file", publicationController.media);
 router.get("/feed", authMiddleware.auth, publicationController.feed);
