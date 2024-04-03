@@ -32,9 +32,9 @@
         </div>
 
         <div class="publicaciones-container">
-            <div class="publicaciones__publicacion" *ngFor="let publication of listaPublicaciones">
-                <!-- <p>{{ publication.text }}</p> -->
-                <img src="{{url+'/publication/media/'+publication.file}}" alt="">
+            <div class="publicaciones__publicacion" *ngFor="let publication of listaPublicaciones"
+                (click)="abrirModalPublicacion(publication)">
+                <img class="publicaciones__publicacion-img" src="{{url+'/publication/media/'+publication.file}}" alt="">
             </div>
             <p class="publicaciones__nueva" (click)="abrirModal($event)">Add Post</p>
         </div>
@@ -45,7 +45,7 @@
 
         <form class="cambiarImg__form" (ngSubmit)="subirImagenAvatar()">
 
-            <span class="cambiarImg__span" (click)="cerrarModal($event)">X</span>
+            <img class="icon__close" src="../../../assets/img/close.svg" (click)="cerrarModal($event)">
 
             <label class="cambiarImg__label" class="cambiarImg__label" for="cambiarImg__input">Select
                 Image</label>
@@ -63,7 +63,7 @@
 
         <form class="editarPerfil__form" (ngSubmit)="editarPerfil()">
 
-            <span class="editarPerfil__span" (click)="cerrarModal($event)">X</span>
+            <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
 
             <label class="editarPerfil__label" for="nombre">Name:</label>
             <input type="text" class="editarPerfil__input" placeholder="nombre" [(ngModel)]="usuario.name"
@@ -98,7 +98,7 @@
 
         <form class="crearPublicacion__form" (ngSubmit)="crearPublicacion()">
 
-            <span class="crearPublicacion__span" (click)="cerrarModal($event)">X</span>
+            <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
 
             <label class="crearPublicacion__label" class="crearPublicacion__label" for="crearPublicacion__input">Select
                 Image</label>
@@ -114,6 +114,23 @@
         </form>
 
     </div>
+
+    <div id="infoImagen-modal">
+
+        <div class="infoImagen-container">
+
+            <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
+
+            <img src="../../../assets/img/trash.svg" class="icon__trash" (click)="borrarPublicacion()">
+
+            <div class="infoImagen__img-container">
+                <img class="infoImgen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
 
 </html>

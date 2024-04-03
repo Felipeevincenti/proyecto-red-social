@@ -1,1 +1,41 @@
-<p>feed works!</p>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+</head>
+
+<body>
+
+    <main (scroll)="onScroll($event)">
+
+
+        <ng-container *ngIf="this.feedPublicaciones && this.feedPublicaciones.length > 0; else sinPublicaciones">
+            <div class="publicaciones">
+                <div class="publicaciones__publicacion" *ngFor="let publicacion of this.feedPublicaciones">
+                    <div class="publicacion__info">
+                        <a class="publicacion__info-avatar-container" (click)="verPerfil(publicacion.user._id)">
+                            <img class="publicacion__info-avatar" src="{{url+'/user/avatar/'+publicacion.user.image}}"
+                                alt="">
+                        </a>
+                        <p class="publicacion__info-nick">@{{publicacion.user.nick}}</p>
+                    </div>
+                    <div class="publicacion__image-container">
+                        <img class="publicacion__image" src="{{url+'/publication/media/'+publicacion.file}}" alt="">
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #sinPublicaciones>
+            <p>No sigues a ningún usuario</p>
+        </ng-template>
+
+
+    </main>
+
+</body>
+
+</html>

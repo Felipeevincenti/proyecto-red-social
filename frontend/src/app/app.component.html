@@ -11,7 +11,7 @@
 
   <header id="header">
 
-    <a class="header__logo" routerLink="/feed" (click)="cerrar()">Social Network</a>
+    <a class="header__logo" routerLink="/feed" (click)="cerrar()">Feed</a>
 
     <ul class="header__ingresar">
 
@@ -21,6 +21,10 @@
       </ng-container>
 
       <ng-template #loggedInTemplate>
+
+        <a class="ingresar__search-container" routerLink="/search" (click)="cerrar()">
+          <img class="ingresar__search-img" src="../assets/img/users.svg" alt="">
+        </a>
 
         <div class="ingresar__img-container">
           <img class="ingresar__img" src="{{url+'/user/avatar/'+usuario.image}}" alt="" (click)="desplegar()">
@@ -32,8 +36,8 @@
 
     <div class="ingresar__despliegue" [class.desplegar]="desplegado">
       <li class="despliegue__li"><a class="despliegue__link" routerLink="/profile" (click)="cerrar()">Profile</a></li>
-      <li class="despliegue__li"><a class="despliegue__link" routerLink="/login"
-          (click)="logOut(); cerrar()">LogOut</a></li>
+      <li class="despliegue__li"><a class="despliegue__link" routerLink="/login" (click)="logOut(); cerrar()">LogOut</a>
+      </li>
     </div>
 
   </header>

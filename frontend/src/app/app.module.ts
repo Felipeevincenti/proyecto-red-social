@@ -9,7 +9,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { FeedComponent } from './components/feed/feed.component';
-import { GlobalService } from './services/global.service'; // Importa GlobalService
+import { GlobalService } from './services/global.service';
+import { SearchComponent } from './components/search/search.component';
+import { ProfileSearchComponent } from './components/profile-search/profile-search.component'; // Importa GlobalService
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { GlobalService } from './services/global.service'; // Importa GlobalServ
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    FeedComponent
+    FeedComponent,
+    SearchComponent,
+    ProfileSearchComponent
   ],
   imports: [
     BrowserModule,

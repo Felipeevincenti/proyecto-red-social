@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile-Search</title>
+</head>
+
+<body>
+
+    <main id="main" (scroll)="onScroll($event)">
+
+        <div class="info-container">
+
+            <div class="info__avatar-container">
+                <div class="info__img-container">
+                    <img class="info__img" src="{{url+'/user/avatar/'+usuario.image}}" alt="">
+                </div>
+            </div>
+
+            <div class=" info__data-container">
+                <p class="info__data info__data-nick">@{{usuario.nick}} <span class="info__data-role"
+                        *ngIf="usuario.role">({{usuario.role}})</span></p>
+                <p class="info__data info__data-bio">{{usuario.bio}}</p>
+                <p class="info__data info__data-bio">Following: {{follows.following}}</p>
+                <p class="info__data info__data-bio">Followers: {{follows.followed}}</p>
+
+                <ng-container *ngIf="!iFollow && !followYou; else followYouTemplate">
+                    <button class="info__follow" (click)="follow()" name="followed">Seguir</button>
+                </ng-container>
+
+                <ng-template #followYouTemplate>
+                    <ng-container *ngIf="!iFollow && followYou; else followTemplate">
+                        <button class="info__unfollow" (click)="follow()" name="followed">Seguir también</button>
+                    </ng-container>
+                </ng-template>
+
+                <ng-template #followTemplate>
+                    <button class="info__unfollow" (click)="unFollow()" name="followed">Dejar de seguir</button>
+                </ng-template>
+
+            </div>
+
+        </div>
+
+        <div class="publicaciones-container">
+            <div class="publicaciones__publicacion" *ngFor="let publication of listaPublicaciones"
+                (click)="abrirModalPublicacion(publication)">
+                <img class="publicaciones__publicacion-img" src="{{url+'/publication/media/'+publication.file}}" alt="">
+            </div>
+        </div>
+
+    </main>
+
+    <div id="infoImagen-modal">
+
+        <div class="infoImagen-container">
+
+            <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
+
+            <div class="infoImagen__img-container">
+                <img class="infoImgen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

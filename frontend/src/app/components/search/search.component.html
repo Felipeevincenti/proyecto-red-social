@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+
+<body>
+
+    <div id="search-container">
+
+        <input class="search__input" type="text">
+
+        <div class="search__profiles">
+
+            <ng-container *ngFor="let user of listaUsuarios">
+                <a class="profiles__profile" (click)="verPerfil(user._id)"
+                    *ngIf="nombreUsuario !== null && user.name !== null && nombreUsuario !== user.name">
+                    <div class="profile__img-container">
+                        <img class="profile__img" src="{{url+'/user/avatar/'+user.image}}" alt="">
+                    </div>
+                    <p class="profile__name">@{{user.nick}}</p>
+                </a>
+            </ng-container>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

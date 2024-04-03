@@ -46,6 +46,10 @@ export class ProfileComponent implements OnInit {
 
   public listaPublicaciones: Array<any> = [];
 
+  public srcImg = "";
+
+  public idDelete = "";
+
   public ngOnInit() {
     location.reload;
     this.profile();
@@ -92,12 +96,30 @@ export class ProfileComponent implements OnInit {
   }
 
   public abrirModal(event: any) {
+    console.log(event);
     const main = document.getElementById("main");
     const cambiarImgModal = document.getElementById("cambiarImg-modal");
     const editarPerfilModal = document.getElementById("editarPerfil-modal");
     const crearPublicacionModal = document.getElementById("crearPublicacion-modal");
+    const infoImgModal = document.getElementById("infoImagen-modal");
 
-    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && main) {
+    const target = event.target as HTMLImageElement;
+
+    if (target.classList.value == "publicaciones__publicacion") {
+      const children = target.children;
+      const child = children[0] as HTMLImageElement;
+      if (child.tagName === 'IMG') {
+        const src = child.src;
+        this.srcImg = src;
+      }
+    }
+
+    else if (target.tagName === 'IMG') {
+      const src = target.src;
+      this.srcImg = src;
+    }
+
+    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && main) {
       window.scroll(0, 0)
       document.body.style.overflow = "hidden";
       main.style.filter = "blur(10px)";
@@ -111,7 +133,24 @@ export class ProfileComponent implements OnInit {
       if (event.target.classList.value == "publicaciones__nueva") {
         crearPublicacionModal.style.display = "flex";
       }
+      if (event.target.classList.value == "publicaciones__publicacion" || event.target.classList.value == "publicaciones__publicacion-img") {
+        infoImgModal.style.display = "flex";
+      }
+    }
+  };
 
+  public abrirModalPublicacion(publication: any) {
+    const main = document.getElementById("main");
+    const infoImgModal = document.getElementById("infoImagen-modal");
+
+    if (infoImgModal && main) {
+      this.srcImg = publication.file;
+      console.log(publication);
+      this.idDelete = publication._id;
+      window.scroll(0, 0)
+      document.body.style.overflow = "hidden";
+      main.style.filter = "blur(10px)";
+      infoImgModal.style.display = "flex";
     }
   };
 
@@ -122,35 +161,35 @@ export class ProfileComponent implements OnInit {
     const cambiarImgModal = document.getElementById("cambiarImg-modal");
     const editarPerfilModal = document.getElementById("editarPerfil-modal");
     const crearPublicacionModal = document.getElementById("crearPublicacion-modal");
+    const infoImgModal = document.getElementById("infoImagen-modal");
 
     const inputFile = document.getElementById("cambiarImg__input");
 
-    if (event.target.classList != "cambiarImg__span" && event.target.classList != "editarPerfil__span" && event.target.classList != "crearPublicacion__span" && event.target.classList != "editarPerfil__submit" && inputFile instanceof HTMLInputElement && inputFile.files && inputFile.files.length === 0) {
+    if (event.target.classList != "icon__close" && inputFile instanceof HTMLInputElement && inputFile.files && inputFile.files.length === 0) {
       return;
     };
 
-    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && main && event.target.classList.value == "editarPerfil__submit") {
+    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && main && event.target.classList.value == "editarPerfil__submit") {
+      this.srcImg = "";
+      this.idDelete = "";
       document.body.style.overflow = "auto";
       cambiarImgModal.style.display = "none";
       editarPerfilModal.style.display = "none";
       crearPublicacionModal.style.display = "none";
+      infoImgModal.style.display = "none";
       main.style.filter = "blur(0px)";
     }
 
-    else if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && main) {
+    else if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && main) {
       this.profile();
       document.body.style.overflow = "auto";
       cambiarImgModal.style.display = "none";
       editarPerfilModal.style.display = "none";
       crearPublicacionModal.style.display = "none";
+      infoImgModal.style.display = "none";
       main.style.filter = "blur(0px)";
     };
 
-  };
-
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event: any) {
-    this.appComponent.desplegado = false;
   };
 
   public counters() {
@@ -193,10 +232,27 @@ export class ProfileComponent implements OnInit {
     }
   };
 
+  public borrarPublicacion() {
+    this.publicacionesService.deletePublication(this.idDelete).subscribe(
+      res => location.reload(),
+      err => console.log(err)
+    )
+  }
+
   public publicaciones() {
     this.publicacionesService.publications(this.userId).subscribe(
       res => this.listaPublicaciones = res.publications,
       err => console.log(err)
     );
   };
+
+  public opciones() {
+    console.log("Opciones");
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: any) {
+    this.appComponent.desplegado = false;
+  };
+
 };

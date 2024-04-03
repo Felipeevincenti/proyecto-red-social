@@ -141,7 +141,6 @@ exports.profile = (req, res) => {
         .then(async (userProfile) => {
 
             const followInfo = await followService.followThisUser(req.user.id, idParam);
-            console.log(req.user.id + "  " + idParam);
             return res.status(200).send({
                 status: "success",
                 userProfile,
@@ -163,23 +162,8 @@ exports.profile = (req, res) => {
 
 exports.profiles = (req, res) => {
 
-    let page = 1;
-
-    if (req.params.page) {
-        page = parseInt(req.params.page);
-    }
-
-    if (isNaN(page)) {
-        return res.status(404).send({
-            status: "err",
-            message: "Página invalida"
-        })
-    }
-
-    let itemsPerPage = 6;
 
     UserModel.find()
-        .paginate(page, itemsPerPage)
         .select("-password -email -role -__v")
         .then(async (usersProfiles) => {
 
@@ -187,7 +171,6 @@ exports.profiles = (req, res) => {
 
             return res.status(200).send({
                 status: "success",
-                itemsPerPage: itemsPerPage,
                 usersProfiles,
                 userFollowing: followUserIds.following,
                 userFollowMe: followUserIds.followers
@@ -381,7 +364,10 @@ exports.avatar = (req, res) => {
 
 exports.counters = async (req, res) => {
 
-    let userId = req.user.id;
+    let userId = req.params.id;
+
+    if (!userId) userId = req.user.id;
+    console.log(userId);
 
     try {
         const following = await FollowModel.countDocuments({ "user": userId })

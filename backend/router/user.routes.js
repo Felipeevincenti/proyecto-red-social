@@ -25,11 +25,11 @@ const uploads = multer({ storage });
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 router.get("/profile/:id", authMiddleware.auth, userController.profile);
-router.get("/profiles:page?", authMiddleware.auth, userController.profiles);
+router.get("/profiles", authMiddleware.auth, userController.profiles);
 router.put("/update", authMiddleware.auth, userController.update);
 router.post("/upload", [authMiddleware.auth, uploads.single("file0")], userController.upload);
 router.get("/avatar/:file", userController.avatar);
-router.get("/counters", authMiddleware.auth, userController.counters);
+router.get("/counters/:id?", authMiddleware.auth, userController.counters);
 
 // Exportacion de rutas
 module.exports = router;

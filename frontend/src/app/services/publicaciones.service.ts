@@ -19,12 +19,20 @@ export class PublicacionesService {
     return this.http.post<any>(`${this.globalService.URL}/publication/save`, data, { headers: this.headers })
   }
 
+  public deletePublication(id: any) {
+    return this.http.delete<any>(`${this.globalService.URL}/publication/delete/${id}`, { headers: this.headers })
+  }
+
   public publications(id: any) {
     return this.http.get<any>(`${this.globalService.URL}/publication/publications/${id}`, { headers: this.headers })
   }
 
   public upload(id: any, file: object) {
     return this.http.post<any>(`${this.globalService.URL}/publication/upload/${id}`, file, { headers: this.headers });
+  }
+
+  public feed() {
+    return this.http.get<any>(`${this.globalService.URL}/publication/feed`, { headers: this.headers })
   }
 
 }

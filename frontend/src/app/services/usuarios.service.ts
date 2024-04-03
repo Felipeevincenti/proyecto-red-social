@@ -28,39 +28,48 @@ export class UsuariosService {
       role: '',
       image: 'default.png'
     };
-    return usuario
-  }
+    return usuario;
+  };
 
   public registrarUsuario(usuario: any) {
     return this.http.post<any>(`${this.globalService.URL}/user/register`, usuario);
-  }
+  };
 
   public login(usuario: any) {
     return this.http.post<any>(`${this.globalService.URL}/user/login`, usuario);
-  }
+  };
 
   public profile(id: any) {
     return this.http.get<any>(`${this.globalService.URL}/user/profile/${id}`, { headers: this.headers });
-  }
+  };
+
+  public profiles() {
+    return this.http.get<any>(`${this.globalService.URL}/user/profiles`, { headers: this.headers });
+  };
 
   public update(newData: any) {
     return this.http.put<any>(`${this.globalService.URL}/user/update`, newData, { headers: this.headers });
-  }
+  };
 
   public logOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
-  }
+  };
 
   public loggedIn() {
     return !!localStorage.getItem('token');
-  }
+  };
 
   public upload(file: object) {
     return this.http.post<any>(`${this.globalService.URL}/user/upload`, file, { headers: this.headers });
-  }
+  };
 
   public counters() {
     return this.http.get<any>(`${this.globalService.URL}/user/counters`, { headers: this.headers });
-  }
+  };
+
+  public searchCounters(id: any) {
+    return this.http.get<any>(`${this.globalService.URL}/user/counters/${id}`, { headers: this.headers });
+  };
+
 }

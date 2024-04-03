@@ -47,7 +47,7 @@
     border-top: none;
     width: 200px;
     right: 125px;
-    z-index:1;
+    z-index: 1;
 }
 
 .desplegar {
@@ -72,6 +72,20 @@
     padding: 15px 0px;
 }
 
+.ingresar__search-container {
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    margin: 0 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.ingresar__search-img {
+    width: 30px;
+}
 
 .ingresar__img-container {
     overflow: hidden;

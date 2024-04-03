@@ -1,0 +1,50 @@
+.publicaciones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    padding: 50px;
+}
+
+.publicacion__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0px;
+}
+
+.publicacion__info-avatar-container {
+    cursor: pointer;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.publicacion__info-avatar {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.publicacion__info-nick {}
+
+.publicacion__image-container {
+    overflow: hidden;
+    width: 600px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #aaa;
+    background: #fff;
+}
+
+.publicacion__image {
+    max-width: 100%;
+    max-height: 100%;
+}

@@ -23,7 +23,6 @@ exports.follow = (req, res) => {
                     message: "Ya estás siguiendo a este usuario"
                 });
             } else if (identity.id == params.followed) {
-                console.log("hola");
                 return res.status(400).send({
                     status: "error",
                     message: "No te podes seguir a vos mismo"
