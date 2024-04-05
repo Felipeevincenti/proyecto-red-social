@@ -25,7 +25,6 @@ export class SearchComponent implements OnInit {
   }
 
   public url = this.globalService.URL;
-  public token = localStorage.getItem('token');
   public userId = localStorage.getItem('id');
 
   public listaUsuarios: Array<any> = [];

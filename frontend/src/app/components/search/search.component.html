@@ -16,13 +16,13 @@
         <div class="search__profiles">
 
             <ng-container *ngFor="let user of listaUsuarios">
-                <a class="profiles__profile" (click)="verPerfil(user._id)"
+                <div class="profiles__profile" (click)="verPerfil(user._id)"
                     *ngIf="nombreUsuario !== null && user.name !== null && nombreUsuario !== user.name">
                     <div class="profile__img-container">
                         <img class="profile__img" src="{{url+'/user/avatar/'+user.image}}" alt="">
                     </div>
                     <p class="profile__name">@{{user.nick}}</p>
-                </a>
+                </div>
             </ng-container>
         </div>
 

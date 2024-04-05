@@ -140,12 +140,14 @@ exports.profile = (req, res) => {
         .select({ password: false })
         .then(async (userProfile) => {
 
-            const followInfo = await followService.followThisUser(req.user.id, idParam);
+            const followUserInfo = await followService.followThisUser(req.user.id, idParam);
+            const followInfo = await followService.followUserIds(req.user.id);
+
             return res.status(200).send({
                 status: "success",
                 userProfile,
                 following: followInfo.following,
-                followers: followInfo.follower
+                followers: followInfo.followers
             });
         })
         .catch((err) => {

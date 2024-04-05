@@ -86,7 +86,11 @@ exports.remove = (req, res) => {
                     status: "error",
                     message: "Publicación no encontrada"
                 });
-            };
+            }
+
+            const imagePath = path.join(__dirname, '../uploads/publications', publicationRemove.file);
+            fs.unlinkSync(imagePath);
+
             return res.status(200).send({
                 status: "success",
                 message: "Publicación eliminada",

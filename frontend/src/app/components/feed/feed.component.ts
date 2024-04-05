@@ -5,6 +5,7 @@ import { AppComponent } from 'src/app/app.component';
 import { PublicacionesService } from 'src/app/services/publicaciones.service';
 import { HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { FollowService } from 'src/app/services/follow.service';
 
 @Component({
   selector: 'app-feed',
@@ -15,6 +16,7 @@ export class FeedComponent implements OnInit {
 
   constructor(
     private usuariosService: UsuariosService,
+    private followService: FollowService,
     private router: Router,
     private globalService: GlobalService,
     private publicacionesService: PublicacionesService,
@@ -27,9 +29,12 @@ export class FeedComponent implements OnInit {
 
   public feedPublicaciones: Array<any> = []
 
+  public follows = false;
+
   ngOnInit(): void {
     this.profile();
     this.feed();
+    this.following();
   }
 
   public profile() {
@@ -49,6 +54,17 @@ export class FeedComponent implements OnInit {
       err => console.log(err)
     );
   };
+
+  public following() {
+    this.followService.following(this.userId).subscribe(
+      res => {
+        if (res.follows.length > 0) {
+          this.follows = true;
+          console.log(this.follows);
+        }
+      }
+    )
+  }
 
   public verPerfil(id: any) {
     this.router.navigate([`/profileSearch/${id}`]);

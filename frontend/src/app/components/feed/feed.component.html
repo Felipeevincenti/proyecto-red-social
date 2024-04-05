@@ -12,7 +12,7 @@
     <main (scroll)="onScroll($event)">
 
 
-        <ng-container *ngIf="this.feedPublicaciones && this.feedPublicaciones.length > 0; else sinPublicaciones">
+        <ng-container *ngIf="this.feedPublicaciones && this.feedPublicaciones.length > 0; else sinFollows">
             <div class="publicaciones">
                 <div class="publicaciones__publicacion" *ngFor="let publicacion of this.feedPublicaciones">
                     <div class="publicacion__info">
@@ -29,9 +29,16 @@
             </div>
         </ng-container>
 
-        <ng-template #sinPublicaciones>
-            <p>No sigues a ningún usuario</p>
+        <ng-template #sinFollows>
+            <ng-container *ngIf="!this.follows; else sinPublicaciones">
+                <p>You do not follow any user</p>
+            </ng-container>
         </ng-template>
+
+        <ng-template #sinPublicaciones>
+            <p>Your followers have no posts</p>
+        </ng-template>
+
 
 
     </main>

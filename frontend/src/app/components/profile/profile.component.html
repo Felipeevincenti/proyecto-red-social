@@ -24,8 +24,10 @@
                 <p class="info__data info__data-nick">@{{usuario.nick}} <span class="info__data-role"
                         *ngIf="usuario.role">({{usuario.role}})</span></p>
                 <p class="info__data info__data-bio">{{usuario.bio}}</p>
-                <p class="info__data info__data-bio">Following: {{follows.following}}</p>
-                <p class="info__data info__data-bio">Followers: {{follows.followed}}</p>
+                <p class="info__data info__data-following" (click)="abrirModal($event)">Following: {{follows.following}}
+                </p>
+                <p class="info__data info__data-followers" (click)="abrirModal($event)">Followers: {{follows.followed}}
+                </p>
                 <button class="info__editar" (click)="abrirModal($event)">Edit profile</button>
             </div>
 
@@ -130,6 +132,48 @@
         </div>
 
     </div>
+
+
+    <div id="following-modal">
+        <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
+        <div class="following-container">
+            <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
+            <ng-container *ngIf="resUsuario.following.length != 0; else sinFollowings">
+                <div class="following__user" *ngFor="let following of resUsuario.following"
+                    (click)="verPerfil(following.userProfile._id)">
+                    <div class="following__user-img-container">
+                        <img class="following__user-img" src="{{url+'/user/avatar/'+(following.userProfile?.image)}}"
+                            alt="">
+                    </div>
+                    <p class="following__user-nick">@{{following.userProfile?.nick}}</p>
+                </div>
+            </ng-container>
+            <ng-template #sinFollowings>
+                <p>You don't follow anyone</p>
+            </ng-template>
+        </div>
+    </div>
+
+    <div id="followers-modal">
+        <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
+        <div class="followers-container">
+            <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
+            <ng-container *ngIf="resUsuario.followers.length != 0; else sinFollowers">
+                <div class="followers__user" *ngFor="let followers of resUsuario.followers"
+                    (click)="verPerfil(followers.userProfile._id)">
+                    <div class="followers__user-img-container">
+                        <img class="followers__user-img" src="{{url+'/user/avatar/'+(followers.userProfile?.image)}}"
+                            alt="">
+                    </div>
+                    <p class="followers__user-nick">@{{followers.userProfile?.nick}}</p>
+                </div>
+            </ng-container>
+            <ng-template #sinFollowers>
+                <p>You don't have followers</p>
+            </ng-template>
+        </div>
+    </div>
+
 
 </body>
 

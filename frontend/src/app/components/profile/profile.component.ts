@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HostListener } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import { PublicacionesService } from 'src/app/services/publicaciones.service';
-
+import { FollowService } from 'src/app/services/follow.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -21,9 +21,15 @@ export class ProfileComponent implements OnInit {
     public appComponent: AppComponent
   ) { };
 
+
   public url = this.globalService.URL;
   public token = localStorage.getItem('token');
   public userId = localStorage.getItem('id');
+
+  public resUsuario = {
+    following: [] as any[],
+    followers: [] as any[]
+  }
 
   public usuario = {
     name: '',
@@ -67,12 +73,44 @@ export class ProfileComponent implements OnInit {
     this.counters();
     this.usuariosService.profile(this.userId).subscribe(
       res => {
+        this.resUsuario = res;
         this.usuario = res.userProfile;
         this.appComponent.usuario.image = this.usuario.image;
+        this.following();
+        this.followers();
       },
       err => console.log(err)
     );
   };
+
+  public following() {
+    const users = [] as any[];
+    if (this.resUsuario) {
+      for (let i = 0; i < this.resUsuario.following.length; i++) {
+        this.usuariosService.profile(this.resUsuario.following[i]).subscribe(
+          res => {
+            users.push(res);
+            this.resUsuario.following = users;
+          },
+          err => console.log(err)
+        )
+      }
+    }
+  }
+
+  public followers() {
+    const users = [] as any[];
+    if (this.resUsuario) {
+      for (let i = 0; i < this.resUsuario.followers.length; i++) {
+        this.usuariosService.profile(this.resUsuario.followers[i]).subscribe(
+          res => {
+            users.push(res);
+            this.resUsuario.followers = users;
+          }
+        )
+      }
+    }
+  }
 
   public subirImagenAvatar() {
     const formData = new FormData();
@@ -90,18 +128,20 @@ export class ProfileComponent implements OnInit {
 
   public editarPerfil() {
     this.usuariosService.update(this.usuario).subscribe(
-      res => console.log(res),
+      res => location.reload(),
       err => console.log(err)
     )
   }
 
   public abrirModal(event: any) {
-    console.log(event);
+    
     const main = document.getElementById("main");
     const cambiarImgModal = document.getElementById("cambiarImg-modal");
     const editarPerfilModal = document.getElementById("editarPerfil-modal");
     const crearPublicacionModal = document.getElementById("crearPublicacion-modal");
     const infoImgModal = document.getElementById("infoImagen-modal");
+    const followingModal = document.getElementById("following-modal");
+    const followersModal = document.getElementById("followers-modal");
 
     const target = event.target as HTMLImageElement;
 
@@ -119,22 +159,32 @@ export class ProfileComponent implements OnInit {
       this.srcImg = src;
     }
 
-    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && main) {
+    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && followingModal && followersModal && main) {
       window.scroll(0, 0)
       document.body.style.overflow = "hidden";
       main.style.filter = "blur(10px)";
 
-      if (event.target.classList.value == "info__cambiarImg") {
-        cambiarImgModal.style.display = "flex";
-      }
-      if (event.target.classList.value == "info__editar") {
-        editarPerfilModal.style.display = "flex";
-      }
-      if (event.target.classList.value == "publicaciones__nueva") {
-        crearPublicacionModal.style.display = "flex";
-      }
-      if (event.target.classList.value == "publicaciones__publicacion" || event.target.classList.value == "publicaciones__publicacion-img") {
-        infoImgModal.style.display = "flex";
+      switch (event.target.classList.value) {
+        case "info__cambiarImg": cambiarImgModal.style.display = "flex";
+          break;
+
+        case "info__editar": editarPerfilModal.style.display = "flex";
+          break;
+
+        case "publicaciones__nueva": crearPublicacionModal.style.display = "flex";
+          break;
+
+        case "publicaciones__publicacion": infoImgModal.style.display = "flex";
+          break;
+
+        case "info__data info__data-following": followingModal.style.display = "flex";
+          break;
+
+        case "info__data info__data-followers": followersModal.style.display = "flex";
+          break;
+
+        default:
+          break;
       }
     }
   };
@@ -145,7 +195,6 @@ export class ProfileComponent implements OnInit {
 
     if (infoImgModal && main) {
       this.srcImg = publication.file;
-      console.log(publication);
       this.idDelete = publication._id;
       window.scroll(0, 0)
       document.body.style.overflow = "hidden";
@@ -155,13 +204,14 @@ export class ProfileComponent implements OnInit {
   };
 
   public cerrarModal(event: any) {
-
     const main = document.getElementById("main");
 
     const cambiarImgModal = document.getElementById("cambiarImg-modal");
     const editarPerfilModal = document.getElementById("editarPerfil-modal");
     const crearPublicacionModal = document.getElementById("crearPublicacion-modal");
     const infoImgModal = document.getElementById("infoImagen-modal");
+    const followingModal = document.getElementById("following-modal");
+    const followersModal = document.getElementById("followers-modal");
 
     const inputFile = document.getElementById("cambiarImg__input");
 
@@ -169,7 +219,7 @@ export class ProfileComponent implements OnInit {
       return;
     };
 
-    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && main && event.target.classList.value == "editarPerfil__submit") {
+    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && followingModal && followersModal && main) {
       this.srcImg = "";
       this.idDelete = "";
       document.body.style.overflow = "auto";
@@ -177,19 +227,10 @@ export class ProfileComponent implements OnInit {
       editarPerfilModal.style.display = "none";
       crearPublicacionModal.style.display = "none";
       infoImgModal.style.display = "none";
+      followingModal.style.display = "none";
+      followersModal.style.display = "none";
       main.style.filter = "blur(0px)";
     }
-
-    else if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && main) {
-      this.profile();
-      document.body.style.overflow = "auto";
-      cambiarImgModal.style.display = "none";
-      editarPerfilModal.style.display = "none";
-      crearPublicacionModal.style.display = "none";
-      infoImgModal.style.display = "none";
-      main.style.filter = "blur(0px)";
-    };
-
   };
 
   public counters() {
@@ -246,8 +287,8 @@ export class ProfileComponent implements OnInit {
     );
   };
 
-  public opciones() {
-    console.log("Opciones");
+ public verPerfil(id: any) {
+    this.router.navigate([`/profileSearch/${id}`]);
   }
 
   @HostListener('window:scroll', ['$event'])
