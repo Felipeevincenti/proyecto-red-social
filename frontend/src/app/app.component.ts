@@ -17,11 +17,11 @@ export class AppComponent {
     private globalService: GlobalService
   ) { }
 
-
   public url = this.globalService.URL;
   public token = localStorage.getItem('token');
   public userId = localStorage.getItem('id');
   public desplegado = false;
+  public deleteOpen = false;
 
   public usuario = {
     name: "",
@@ -62,5 +62,41 @@ export class AppComponent {
 
   public cerrar() {
     this.desplegado = false;
+  }
+
+  public confirmDelete() {
+    const confirmarEliminacion = document.getElementById("despliegue__confirmdelete-container");
+
+    if (confirmarEliminacion && !this.deleteOpen) {
+      confirmarEliminacion.style.display = "block";
+      this.deleteOpen = true;
+    }
+    else if (confirmarEliminacion && this.deleteOpen) {
+      confirmarEliminacion.style.display = "none";
+      this.deleteOpen = false;
+    }
+  }
+
+  public delete(bool: boolean) {
+    if (bool) {
+      this.usuariosService.delete(this.userId).subscribe(
+        res => {
+          this.cerrar();
+          const confirmarDelete = document.getElementById("despliegue__confirmdelete-container");
+          if (confirmarDelete) {
+            localStorage.removeItem('id');
+            localStorage.removeItem('token');
+            confirmarDelete.style.display = "none";
+            this.router.navigate(['/login']);
+          }
+        },
+        err => console.log(err)
+      )
+    } else {
+      const confirmarDelete = document.getElementById("despliegue__confirmdelete-container");
+      if (confirmarDelete) {
+        confirmarDelete.style.display = "none";
+      }
+    }
   }
 }

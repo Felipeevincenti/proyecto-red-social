@@ -11,19 +11,37 @@
 
     <div id="search-container">
 
-        <input class="search__input" type="text">
+        <div class="search__input-container">
+            <img class="search__input-img" src="../../../assets/img/search.svg" alt="">
+            <input class="search__input-input" type="text" [(ngModel)]="busqueda" (ngModelChange)="buscarUsuario()">
+        </div>
 
         <div class="search__profiles">
 
-            <ng-container *ngFor="let user of listaUsuarios">
-                <div class="profiles__profile" (click)="verPerfil(user._id)"
-                    *ngIf="nombreUsuario !== null && user.name !== null && nombreUsuario !== user.name">
-                    <div class="profile__img-container">
-                        <img class="profile__img" src="{{url+'/user/avatar/'+user.image}}" alt="">
+            <ng-container *ngIf="listaBusqueda.length != 0 || busqueda != ''; else Users">
+                <ng-container *ngFor="let user of listaBusqueda">
+                    <div class="profiles__profile" (click)="verPerfil(user._id)"
+                        *ngIf="nombreUsuario !== null && user.name !== null && nombreUsuario !== user.name">
+                        <div class="profile__img-container">
+                            <img class="profile__img" src="{{url+'/user/avatar/'+user.image}}" alt="">
+                        </div>
+                        <p class="profile__name">@{{user.nick}}</p>
                     </div>
-                    <p class="profile__name">@{{user.nick}}</p>
-                </div>
+                </ng-container>
             </ng-container>
+
+            <ng-template #Users>
+                <ng-container *ngFor="let user of listaUsuarios">
+                    <div class="profiles__profile" (click)="verPerfil(user._id)"
+                        *ngIf="nombreUsuario !== null && user.name !== null && nombreUsuario !== user.name">
+                        <div class="profile__img-container">
+                            <img class="profile__img" src="{{url+'/user/avatar/'+user.image}}" alt="">
+                        </div>
+                        <p class="profile__name">@{{user.nick}}</p>
+                    </div>
+                </ng-container>
+            </ng-template>
+
         </div>
 
     </div>

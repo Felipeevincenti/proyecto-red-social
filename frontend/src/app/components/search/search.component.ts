@@ -29,7 +29,11 @@ export class SearchComponent implements OnInit {
 
   public listaUsuarios: Array<any> = [];
 
+  public listaBusqueda: Array<any> = [];
+
   public nombreUsuario = "";
+
+  public nickUsuario = "";
 
   public infoUsuario = {
     bio: '',
@@ -43,6 +47,8 @@ export class SearchComponent implements OnInit {
     following: 0
   }
 
+  public busqueda = "";
+
   public followed = "";
 
   public listaPublicaciones: Array<any> = [];
@@ -51,6 +57,7 @@ export class SearchComponent implements OnInit {
     this.usuariosService.profile(this.userId).subscribe(
       res => {
         this.nombreUsuario = res.userProfile.name;
+        this.nickUsuario = res.userProfile.nick;
         this.appComponent.usuario.image = res.userProfile.image;
       },
       err => console.log(err)
@@ -59,7 +66,7 @@ export class SearchComponent implements OnInit {
 
   public verPerfil(id: any) {
     this.router.navigate([`/profileSearch/${id}`]);
-  }
+  };
 
   public profiles() {
     this.usuariosService.profiles().subscribe(
@@ -67,5 +74,23 @@ export class SearchComponent implements OnInit {
       err => console.log(err)
     )
   };
+
+  public buscarUsuario() {
+    if (this.busqueda != "") {
+      this.usuariosService.searchUser(this.busqueda.replace(/ /g, "+")).subscribe(
+        res => {
+          if (res.users) {
+            for (const user of res.users) {
+              if (user.nick != this.nickUsuario) {
+                this.listaBusqueda = res.users;
+              }
+            }
+          }
+        },
+        err => this.listaBusqueda = []
+      );
+    }
+    this.listaBusqueda = [];
+  }
 
 };

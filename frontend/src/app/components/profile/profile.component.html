@@ -123,16 +123,21 @@
 
             <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
 
-            <img src="../../../assets/img/trash.svg" class="icon__trash" (click)="borrarPublicacion()">
+            <img src="../../../assets/img/trash.svg" class="icon__trash" (click)="deseasEliminar()">
 
             <div class="infoImagen__img-container">
                 <img class="infoImgen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
             </div>
 
+            <div id="confirmar__eliminacion">
+                <div class="confirmar__eliminacion-pico"></div>
+                <button class="confirmar__eliminacion-confirmar" (click)="borrarPublicacion(true)">Eliminar</button>
+                <button class="confirmar__eliminacion-cancelar" (click)="borrarPublicacion(false)">Cancelar</button>
+            </div>
+
         </div>
 
     </div>
-
 
     <div id="following-modal">
         <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
@@ -173,7 +178,6 @@
             </ng-template>
         </div>
     </div>
-
 
 </body>
 

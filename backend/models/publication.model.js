@@ -6,8 +6,7 @@ const PublicationSchema = new Schema({
         ref: "User"
     },
     text: {
-        type: String,
-        required: true
+        type: String
     },
     file: String,
     created_at: {

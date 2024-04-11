@@ -13,9 +13,19 @@ const UserModel = require('../models/user.model');
 const FollowModel = require('../models/follow.model');
 const PublicationModel = require('../models/publication.model');
 
+function contarLetras(palabra) {
+    const letras = palabra.length;
+    return letras;
+};
 
+function contarPalabras(palabras) {
+    const palabraSinEspacios = palabras.trim();
+    const cantidadPalabrasArray = palabraSinEspacios.split(/\s+/);
+    const cantidadPalabras = cantidadPalabrasArray.length;
+    return cantidadPalabras;
+};
 
-
+const emailFormat = /^[^\s@]+@(gmail\.com|yahoo\.com|hotmail\.com|outlook\.com)$/;
 
 exports.register = async (req, res) => {
 
@@ -26,40 +36,87 @@ exports.register = async (req, res) => {
             status: "error",
             message: "Faltan datos por enviar"
         });
-    }
+    };
 
-    UserModel.find({
-        $or: [
-            { email: params.email.toLowerCase() },
-            { nick: params.nick.toLowerCase() }
-        ]
-    })
+    if (contarPalabras(params.name) > 2) {
+        return res.status(400).send({
+            status: "error",
+            message: "El nombre no puede tener más de 2 palabras"
+        });
+    };
+
+    if (contarPalabras(params.surname) > 2) {
+        return res.status(400).send({
+            status: "error",
+            message: "El apellido no puede tener más de 2 palabras"
+        });
+    };
+
+    if (contarLetras(params.nick) < 4 || contarLetras(params.nick) > 20) {
+        return res.status(400).send({
+            status: "error",
+            message: "El nick debe tener entre 4 y 20 caracteres"
+        });
+    };
+
+    if (!emailFormat.test(params.email)) {
+        return res.status(400).send({
+            status: "error",
+            message: "El formato del correo electrónico es incorrecto"
+        });
+    };
+
+    if (params.password.length < 8 || params.password.length > 20) {
+        return res.status(400).send({
+            status: "error",
+            message: "La contraseña debe contener entre 8 y 20"
+        });
+    };
+
+    UserModel.find({ "nick": params.nick.toLowerCase() })
 
         .then(async (users) => {
 
-            if (users && users.length >= 1) {
-                return res.status(404).send({
+            if (users.length >= 1) {
+                return res.status(400).send({
                     status: "error",
-                    message: `El email o el nick ya existen`
+                    message: `El nick ya existe`
                 });
-            }
+            };
 
-            const hash = await bcrypt.hash(params.password, 10);
-            params.password = hash;
+            UserModel.find({ "email": params.email.toLowerCase() })
 
-            const newUser = new UserModel(params);
+                .then(async (user) => {
+                    if (user.length >= 1) {
+                        return res.status(400).send({
+                            status: "error",
+                            message: `El email ya existe`
+                        });
+                    };
 
-            newUser.save()
-                .then((userStored) => {
-                    if (userStored) {
-                        return res.status(200).send({
-                            status: "success",
-                            message: "Usuario registrado exitosamente",
-                            userStored
+                    const hash = await bcrypt.hash(params.password, 10);
+                    params.password = hash;
+
+                    const newUser = new UserModel(params);
+
+                    newUser.save()
+                        .then((userStored) => {
+                            if (userStored) {
+                                return res.status(200).send({
+                                    status: "success",
+                                    message: "Usuario registrado exitosamente",
+                                    userStored
+                                })
+                            }
                         })
-                    }
+                        .catch((err) => {
+                            return res.status(500).send({
+                                err,
+                                status: "error",
+                                message: "Error al guardar el usuario"
+                            })
+                        })
                 })
-
                 .catch((err) => {
                     return res.status(500).send({
                         err,
@@ -250,23 +307,64 @@ exports.update = (req, res) => {
                     message: "Error al actualizar el usuario"
                 })
             }
-
-            // Lo mismo que con await pero con promesa
-            // .then((userUpdated) => {
-            //     return res.status(200).send({
-            //         status: "success",
-            //         message: "Usuario actualizado",
-            //         user: userUpdated
-            //     })
-            // })
-            // .catch((err) => {
-            //     return res.status(500).send({
-            //         status: "error",
-            //         message: "Error al actualizar el usuario"
-            //     })
-            // })
         });
 }
+
+
+
+
+
+exports.delete = async (req, res) => {
+
+    try {
+
+        const idParam = req.params.id;
+        const userDelete = await UserModel.findByIdAndDelete({ "_id": idParam });
+
+        if (userDelete.image != 'default.png') {
+            const imagePathAvatar = path.join(__dirname, '../uploads/avatars', userDelete.image);
+            fs.unlinkSync(imagePathAvatar);
+        }
+
+        if (!userDelete) {
+            return res.status(404).send({
+                status: "error",
+                message: "No se encontró el usuario"
+            });
+        }
+
+        const publications = await PublicationModel.find({ "user": idParam });
+
+        for (const publication of publications) {
+            await PublicationModel.findOneAndDelete({ "user": publication.user });
+            const imagePathPublication = path.join(__dirname, '../uploads/publications', publication.file);
+            fs.unlinkSync(imagePathPublication);
+        }
+
+        const followings = await FollowModel.find({ "user": idParam });
+
+        for (const following of followings) {
+            await FollowModel.findOneAndDelete({ "user": idParam });
+        }
+
+        const followers = await FollowModel.find({ "followed": idParam });
+
+        for (const follower of followers) {
+            await FollowModel.findOneAndDelete({ "followed": idParam });
+        }
+
+        return res.status(200).send({
+            status: "success",
+            message: "Usuario, publicaciones y follows eliminados"
+        });
+
+    } catch (err) {
+        return res.status(500).send({
+            status: "error",
+            message: "Error al eliminar el usuario y sus publicaciones"
+        });
+    }
+};
 
 
 
@@ -389,4 +487,41 @@ exports.counters = async (req, res) => {
             message: "Error al contar los datos"
         })
     }
+}
+
+
+
+
+
+exports.buscarUsuario = (req, res) => {
+
+    const busqueda = req.params.busqueda;
+
+    UserModel.find({
+        "$or": [
+            { "nick": { "$regex": busqueda, "$options": "i" } },
+            { "name": { "$regex": busqueda, "$options": "i" } },
+            { "surname": { "$regex": busqueda, "$options": "i" } }
+        ]
+    })
+        .sort({ create_at: -1 })
+        .then((users) => {
+            if (users.length == 0) {
+                return res.status(200).send({
+                    status: "error",
+                    message: "Ningun usuario cohincide con la busqueda"
+                })
+            }
+            return res.status(200).send({
+                status: "success",
+                message: "Usuarios que cohinciden con tu busqueda",
+                users
+            })
+        })
+        .catch((err) => {
+            return res.status(500).send({
+                status: "error",
+                message: "Error en la busqueda"
+            })
+        })
 }

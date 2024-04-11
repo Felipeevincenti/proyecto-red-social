@@ -35,8 +35,20 @@
     </ul>
 
     <div class="ingresar__despliegue" [class.desplegar]="desplegado">
-      <li class="despliegue__li"><a class="despliegue__link" routerLink="/profile" (click)="cerrar()">Profile</a></li>
-      <li class="despliegue__li"><a class="despliegue__link" routerLink="/login" (click)="logOut(); cerrar()">LogOut</a>
+      <li class="despliegue__li despliegue__li-profile"><a class="despliegue__link" routerLink="/profile"
+          (click)="cerrar()">Profile</a></li>
+      <li class="despliegue__li despliegue__li-logout"><a class="despliegue__link" routerLink="/login"
+          (click)="logOut(); cerrar()">LogOut</a>
+      </li>
+      <li class="despliegue__li despliegue__li-delete">
+        <a class="despliegue__link" routerLink="/profile" (click)="confirmDelete()">Delete profile</a>
+        <div id="despliegue__confirmdelete-container">
+          <p class="despliegue__confirmdelete-text">Once the account is deleted you will lose all data</p>
+          <div class="despliegue__confirmdelete-buttonscontainer">
+            <button class="despliegue__confirmdelete-button" (click)="delete(true)">Delete</button>
+            <button class="despliegue__confirmdelete-button" (click)="delete(false)">Cancel</button>
+          </div>
+        </div>
       </li>
     </div>
 

@@ -21,10 +21,11 @@ export class ProfileComponent implements OnInit {
     public appComponent: AppComponent
   ) { };
 
-
   public url = this.globalService.URL;
   public token = localStorage.getItem('token');
   public userId = localStorage.getItem('id');
+
+  public openImgModal = false;
 
   public resUsuario = {
     following: [] as any[],
@@ -134,7 +135,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public abrirModal(event: any) {
-    
+
     const main = document.getElementById("main");
     const cambiarImgModal = document.getElementById("cambiarImg-modal");
     const editarPerfilModal = document.getElementById("editarPerfil-modal");
@@ -210,6 +211,7 @@ export class ProfileComponent implements OnInit {
     const editarPerfilModal = document.getElementById("editarPerfil-modal");
     const crearPublicacionModal = document.getElementById("crearPublicacion-modal");
     const infoImgModal = document.getElementById("infoImagen-modal");
+    const confirmar = document.getElementById("confirmar__eliminacion");
     const followingModal = document.getElementById("following-modal");
     const followersModal = document.getElementById("followers-modal");
 
@@ -219,7 +221,7 @@ export class ProfileComponent implements OnInit {
       return;
     };
 
-    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && followingModal && followersModal && main) {
+    if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && confirmar && followingModal && followersModal && main) {
       this.srcImg = "";
       this.idDelete = "";
       document.body.style.overflow = "auto";
@@ -227,6 +229,7 @@ export class ProfileComponent implements OnInit {
       editarPerfilModal.style.display = "none";
       crearPublicacionModal.style.display = "none";
       infoImgModal.style.display = "none";
+      confirmar.style.display = "none";
       followingModal.style.display = "none";
       followersModal.style.display = "none";
       main.style.filter = "blur(0px)";
@@ -273,11 +276,32 @@ export class ProfileComponent implements OnInit {
     }
   };
 
-  public borrarPublicacion() {
-    this.publicacionesService.deletePublication(this.idDelete).subscribe(
-      res => location.reload(),
-      err => console.log(err)
-    )
+  public borrarPublicacion(event: any) {
+    if (event) {
+      this.publicacionesService.deletePublication(this.idDelete).subscribe(
+        res => location.reload(),
+        err => console.log(err)
+      )
+    } else {
+
+      const confirmar = document.getElementById("confirmar__eliminacion");
+
+      if (confirmar) {
+        confirmar.style.display = "none";
+      };
+    }
+  }
+
+  public deseasEliminar() {
+    const confirmarEliminacion = document.getElementById("confirmar__eliminacion");
+    if (confirmarEliminacion && !this.openImgModal) {
+      confirmarEliminacion.style.display = "flex";
+      this.openImgModal = true;
+    }
+    else if (confirmarEliminacion && this.openImgModal) {
+      confirmarEliminacion.style.display = "none";
+      this.openImgModal = false;
+    }
   }
 
   public publicaciones() {
@@ -287,7 +311,7 @@ export class ProfileComponent implements OnInit {
     );
   };
 
- public verPerfil(id: any) {
+  public verPerfil(id: any) {
     this.router.navigate([`/profileSearch/${id}`]);
   }
 

@@ -51,6 +51,10 @@ export class UsuariosService {
     return this.http.put<any>(`${this.globalService.URL}/user/update`, newData, { headers: this.headers });
   };
 
+  public delete(id: any) {
+    return this.http.delete<any>(`${this.globalService.URL}/user/delete/${id}`, { headers: this.headers });
+  };
+
   public logOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
@@ -72,4 +76,7 @@ export class UsuariosService {
     return this.http.get<any>(`${this.globalService.URL}/user/counters/${id}`, { headers: this.headers });
   };
 
+  public searchUser(busqueda: any) {
+    return this.http.get<any>(`${this.globalService.URL}/user/buscar/${busqueda}`, { headers: this.headers });
+  };
 }

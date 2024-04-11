@@ -27,9 +27,11 @@ router.post("/login", userController.login);
 router.get("/profile/:id", authMiddleware.auth, userController.profile);
 router.get("/profiles", authMiddleware.auth, userController.profiles);
 router.put("/update", authMiddleware.auth, userController.update);
+router.delete("/delete/:id", authMiddleware.auth, userController.delete);
 router.post("/upload", [authMiddleware.auth, uploads.single("file0")], userController.upload);
 router.get("/avatar/:file", userController.avatar);
 router.get("/counters/:id?", authMiddleware.auth, userController.counters);
+router.get("/buscar/:busqueda", authMiddleware.auth, userController.buscarUsuario);
 
 // Exportacion de rutas
 module.exports = router;

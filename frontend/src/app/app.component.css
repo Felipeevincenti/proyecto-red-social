@@ -60,8 +60,16 @@
     list-style: none;
 }
 
-.despliegue__li:last-child {
+.despliegue__li-logout {
     border-top: 1px solid #aaa;
+}
+
+.despliegue__li-delete {
+    border-top: 1px solid #aaa;
+}
+
+.despliegue__li-delete .despliegue__link {
+    color: rgb(194, 0, 0);
 }
 
 .despliegue__link {
@@ -71,6 +79,33 @@
     color: #444;
     padding: 15px 0px;
 }
+
+#despliegue__confirmdelete-container {
+    display: none;
+}
+
+.despliegue__confirmdelete-buttonscontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0px;
+}
+
+.despliegue__confirmdelete-button {
+    padding: 5px 10px;
+    color: #fff;
+    border: none;
+}
+
+.despliegue__confirmdelete-button:first-child {
+    background: rgb(189, 1, 1);
+}
+
+.despliegue__confirmdelete-button:last-child {
+    background: rgb(58, 58, 216);
+}
+
 
 .ingresar__search-container {
     overflow: hidden;

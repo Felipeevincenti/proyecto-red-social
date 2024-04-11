@@ -16,12 +16,12 @@ exports.save = async (req, res) => {
 
     const params = req.body;
 
-    if (!params.text) {
-        return res.status(400).send({
-            status: "error",
-            message: "Faltan enviar datos"
-        });
-    };
+    // if (!params.text) {
+    //     return res.status(400).send({
+    //         status: "error",
+    //         message: "Faltan enviar datos"
+    //     });
+    // };
 
     const newPublication = new PublicationModel(params);
     newPublication.user = req.user.id;
