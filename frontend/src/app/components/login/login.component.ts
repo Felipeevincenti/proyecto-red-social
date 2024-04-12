@@ -32,7 +32,11 @@ export class LoginComponent {
             console.log(err);
           })
       },
-      err => console.log(err)
+      err => {
+        console.log(err);
+        const error = document.querySelector(".login__error") as HTMLElement;
+        error.style.display = "block";
+      }
     )
   }
 }

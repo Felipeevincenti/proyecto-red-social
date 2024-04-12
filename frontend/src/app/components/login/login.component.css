@@ -25,9 +25,15 @@
     font-size: 18px;
     cursor: pointer;
     color: #fff;
-    margin: 30px auto;
+    margin: 15px auto;
     padding: 12px 40px;
     border: none;
     border-radius: 10px;
     background: rgb(1, 56, 167);
+}
+
+.login__error {
+    display: none;
+    color: rgb(254, 21, 21);
+    margin-top: 15px;
 }
