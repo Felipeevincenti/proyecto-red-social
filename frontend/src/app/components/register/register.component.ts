@@ -98,7 +98,13 @@ export class RegisterComponent {
           res => {
             localStorage.setItem('token', res.token);
             localStorage.setItem('id', res.user.id);
-            this.router.navigate(['/profile']);
+            this.router.navigate(['/profile'])
+              .then(() => {
+                location.reload();
+              })
+              .catch((err) => {
+                console.log(err);
+              })
           },
           err => console.log(err)
         )

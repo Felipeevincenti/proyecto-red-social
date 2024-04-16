@@ -21,7 +21,7 @@
             </div>
 
             <div class=" info__data-container">
-                <p class="info__data info__data-nick">@{{usuario.nick}} <span class="info__data-role"
+                <p class="info__data info__data-nick">@{{usuario.nick.toLowerCase()}} <span class="info__data-role"
                         *ngIf="usuario.role">({{usuario.role}})</span></p>
                 <p class="info__data info__data-bio">{{usuario.bio}}</p>
                 <p class="info__data info__data-following" (click)="abrirModal($event)">Following: {{follows.following}}
@@ -65,15 +65,20 @@
 
         <form class="editarPerfil__form" (ngSubmit)="editarPerfil()">
 
-            <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
+            <img src="../../../assets/img/close.svg" class="icon__close edit__profile" (click)="cerrarModal($event)">
 
             <label class="editarPerfil__label" for="nombre">Name:</label>
             <input type="text" class="editarPerfil__input" placeholder="nombre" [(ngModel)]="usuario.name"
                 name="nombre">
+            <span id="editarPerfil__error-name" class="editarPerfil__error">El nombre no puede
+                tener más de 2 palabras</span>
 
             <label class="editarPerfil__label" for="nombre">Surname:</label>
             <input type="text" class="editarPerfil__input" placeholder="apellido" [(ngModel)]="usuario.surname"
                 name="apellido">
+            <span id="editarPerfil__error-surname" class="editarPerfil__error">El apellido
+                no puede tener más de 2
+                palabras</span>
 
             <label class="editarPerfil__label" for="nombre">Biography:</label>
             <input type="text" class="editarPerfil__input" placeholder="biografia" [(ngModel)]="usuario.bio"
@@ -81,6 +86,8 @@
 
             <label class="editarPerfil__label" for="nombre">Nick:</label>
             <input type="text" class="editarPerfil__input" placeholder="nick" [(ngModel)]="usuario.nick" name="nick">
+            <span id="editarPerfil__error-nick" class="editarPerfil__error">El nick debe tener
+                entre 4 y 20 caracteres</span>
 
             <label class="editarPerfil__label" for="role">Role:</label>
             <select [(ngModel)]="usuario.role" class="editarPerfil__input" name="role">
@@ -97,46 +104,31 @@
     </div>
 
     <div id="crearPublicacion-modal">
-
         <form class="crearPublicacion__form" (ngSubmit)="crearPublicacion()">
-
             <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
-
             <label class="crearPublicacion__label" class="crearPublicacion__label" for="crearPublicacion__input">Select
                 Image</label>
-
             <input id="crearPublicacion__input" class="crearPublicacion__input" type="file"
                 accept=".png, .jpeg, .jpg, .png" (change)="obtenerImagenPublicacion($event)" name="image">
-
             <textarea class="crearPublicacion__textarea" placeholder="Publication description" name="text"
                 [(ngModel)]="infoPublicacion.text"></textarea>
-
             <input class="crearPublicacion__submit" type="submit" value="Create" (click)="cerrarModal($event)">
-
         </form>
-
     </div>
 
     <div id="infoImagen-modal">
-
         <div class="infoImagen-container">
-
             <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
-
             <img src="../../../assets/img/trash.svg" class="icon__trash" (click)="deseasEliminar()">
-
             <div class="infoImagen__img-container">
                 <img class="infoImgen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
             </div>
-
             <div id="confirmar__eliminacion">
                 <div class="confirmar__eliminacion-pico"></div>
                 <button class="confirmar__eliminacion-confirmar" (click)="borrarPublicacion(true)">Eliminar</button>
                 <button class="confirmar__eliminacion-cancelar" (click)="borrarPublicacion(false)">Cancelar</button>
             </div>
-
         </div>
-
     </div>
 
     <div id="following-modal">

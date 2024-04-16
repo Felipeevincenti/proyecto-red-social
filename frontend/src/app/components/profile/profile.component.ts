@@ -128,6 +128,40 @@ export class ProfileComponent implements OnInit {
   };
 
   public editarPerfil() {
+
+    const errorNombre = document.getElementById('editarPerfil__error-name');
+    const errorApellido = document.getElementById('editarPerfil__error-surname');
+    const errorNick = document.getElementById('editarPerfil__error-nick');
+
+    function contarLetras(palabra: any) {
+      const letras = palabra.length;
+      return letras;
+    };
+
+    function contarPalabras(palabras: any) {
+      const palabraSinEspacios = palabras.trim();
+      const cantidadPalabrasArray = palabraSinEspacios.split(/\s+/);
+      const cantidadPalabras = cantidadPalabrasArray.length;
+      return cantidadPalabras;
+    };
+
+    function mostrarError(condicion: any, span: any) {
+      if (condicion) {
+        if (span) {
+          (span as HTMLElement).style.display = "block"
+        }
+        return
+      };
+      (span as HTMLElement).style.display = "none";
+    }
+
+
+    mostrarError(contarPalabras(this.usuario.name) > 2, errorNombre);
+    mostrarError(contarPalabras(this.usuario.surname) > 2, errorApellido);
+    mostrarError(contarLetras(this.usuario.nick) < 4 || contarLetras(this.usuario.nick) > 20, errorNick);
+
+
+
     this.usuariosService.update(this.usuario).subscribe(
       res => location.reload(),
       err => console.log(err)
@@ -217,9 +251,13 @@ export class ProfileComponent implements OnInit {
 
     const inputFile = document.getElementById("cambiarImg__input");
 
-    if (event.target.classList != "icon__close" && inputFile instanceof HTMLInputElement && inputFile.files && inputFile.files.length === 0) {
+    if (event.target.classList != "icon__close" && event.target.classList != "icon__close edit__profile" && inputFile instanceof HTMLInputElement && inputFile.files && inputFile.files.length === 0) {
       return;
-    };
+    }
+
+    if (event.target.classList == "icon__close edit__profile") {
+      this.profile()
+    }
 
     if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && confirmar && followingModal && followersModal && main) {
       this.srcImg = "";

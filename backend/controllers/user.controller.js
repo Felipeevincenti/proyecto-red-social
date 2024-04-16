@@ -259,10 +259,30 @@ exports.update = (req, res) => {
     delete userIdentity.role;
     delete userIdentity.image;
 
+    if (contarPalabras(userToUpdate.name) > 2) {
+        return res.status(400).send({
+            status: "error",
+            message: "El nombre no puede tener más de 2 palabras"
+        });
+    };
+
+    if (contarPalabras(userToUpdate.surname) > 2) {
+        return res.status(400).send({
+            status: "error",
+            message: "El apellido no puede tener más de 2 palabras"
+        });
+    };
+
+    if (contarLetras(userToUpdate.nick) < 4 || contarLetras(userToUpdate.nick) > 20) {
+        return res.status(400).send({
+            status: "error",
+            message: "El nick debe tener entre 4 y 20 caracteres"
+        });
+    };
+
     // Comprobar si el usuario ya existe
     UserModel.find({
         $or: [
-            { email: userToUpdate.email.toLowerCase() },
             { nick: userToUpdate.nick.toLowerCase() }
         ]
     })

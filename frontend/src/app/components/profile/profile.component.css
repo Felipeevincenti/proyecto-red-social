@@ -19,7 +19,7 @@
 }
 
 .info-container {
-    padding: 50px 0px;
+    padding: 60px 0px;
     margin-bottom: 50px;
     display: flex;
     justify-content: space-evenly;
@@ -72,12 +72,16 @@
     width: fit-content;
 }
 
-.info__data:first-child {
+.info__data-nick {
     cursor: default;
+    font-size: 24px;
 }
 
-.info__data-nick {
-    font-size: 24px;
+.info__data-bio {
+    min-width: 200px;
+    max-width: 400px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .info__data-role {
@@ -249,9 +253,9 @@
 
 .editarPerfil__form {
     width: 900px;
-    height: 600px;
+    min-height: 600px;
     margin: 0 auto;
-    padding: 0 330px;
+    padding: 20px 330px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -264,22 +268,30 @@
 .editarPerfil__label {
     color: #eee;
     margin: 5px 20px;
+    margin-top: 20px;
 }
 
 .editarPerfil__input {
     width: 200px;
     margin: 0 auto;
-    margin-bottom: 20px;
     padding: 10px;
     border: none;
     outline: none;
     background: #ddd;
 }
 
+.editarPerfil__error {
+    display: none;
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+    text-align: center;
+}
+
 .editarPerfil__submit {
     cursor: pointer;
     color: #fff;
     margin: 0 auto;
+    margin-top: 15px;
     padding: 20px 50px;
     border: none;
     border-radius: 10px;
