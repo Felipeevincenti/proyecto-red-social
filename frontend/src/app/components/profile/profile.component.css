@@ -392,9 +392,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 40px;
+    gap: 20px;
     position: absolute;
-    padding: 50px;
+    padding: 60px;
     top: 200px;
     left: 0;
     right: 0;
@@ -403,6 +403,7 @@
 
 .infoImagen__img-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -412,9 +413,23 @@
     overflow: hidden;
 }
 
-.infoImgen__img {
+.infoImagen__img {
     max-width: 100%;
     max-height: 100%;
+}
+
+.infoImagen__p {
+    color: #fff;
+    width: 800px;
+    text-align: center;
+    overflow-y: scroll;
+    max-height: 100px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.infoImagen__p::-webkit-scrollbar {
+    width: 0px;
 }
 
 #confirmar__eliminacion {

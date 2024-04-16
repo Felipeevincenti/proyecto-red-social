@@ -15,8 +15,8 @@ export class LoginComponent {
   ) { }
 
   public usuario = {
-    email: '@gmail.com',
-    password: "contraseña"
+    email: '',
+    password: ''
   };
 
   public login() {

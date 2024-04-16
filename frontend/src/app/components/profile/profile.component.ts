@@ -53,6 +53,7 @@ export class ProfileComponent implements OnInit {
 
   public listaPublicaciones: Array<any> = [];
 
+  public text = "";
   public srcImg = "";
 
   public idDelete = "";
@@ -229,6 +230,7 @@ export class ProfileComponent implements OnInit {
     const infoImgModal = document.getElementById("infoImagen-modal");
 
     if (infoImgModal && main) {
+      this.text = publication.text;
       this.srcImg = publication.file;
       this.idDelete = publication._id;
       window.scroll(0, 0)

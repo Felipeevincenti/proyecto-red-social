@@ -121,8 +121,9 @@
             <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
             <img src="../../../assets/img/trash.svg" class="icon__trash" (click)="deseasEliminar()">
             <div class="infoImagen__img-container">
-                <img class="infoImgen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
+                <img class="infoImagen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
             </div>
+            <p class="infoImagen__p" *ngIf="text">{{text}}</p>
             <div id="confirmar__eliminacion">
                 <div class="confirmar__eliminacion-pico"></div>
                 <button class="confirmar__eliminacion-confirmar" (click)="borrarPublicacion(true)">Eliminar</button>
