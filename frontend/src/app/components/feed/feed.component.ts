@@ -60,7 +60,6 @@ export class FeedComponent implements OnInit {
       res => {
         if (res.follows.length > 0) {
           this.follows = true;
-          console.log(this.follows);
         }
       }
     )

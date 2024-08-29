@@ -12,12 +12,12 @@
 
         <div class="register__inputs-group">
             <div class="register__inputs-container">
-                <label class="register__label" for="">Name:</label>
+                <label class="register__label" for="">Name: <span class="obligatorio">*</span></label>
                 <input class="register__input" type="text" placeholder="Name" [(ngModel)]="usuario.name" name="nombre">
                 <span id="error-name" class="register__error">El nombre no puede tener más de 2 palabras</span>
             </div>
             <div class="register__inputs-container">
-                <label class="register__label" for="">Surname:</label>
+                <label class="register__label" for="">Surname: <span class="obligatorio">*</span></label>
                 <input class="register__input" type="text" placeholder="Surname" [(ngModel)]="usuario.surname"
                     name="apellido">
                 <span id="error-surname" class="register__error">El apellido no puede tener más de 2 palabras</span>
@@ -26,13 +26,13 @@
 
         <div class="register__inputs-group">
             <div class="register__inputs-container">
-                <label class="register__label" for="">Nick:</label>
+                <label class="register__label" for="">Nick: <span class="obligatorio">*</span></label>
                 <input class="register__input" type="text" placeholder="Nick" [(ngModel)]="usuario.nick" name="nick">
                 <span id="error-nick" class="register__error">El nick debe tener entre 4 y 20 caracteres</span>
                 <span id="error-nick-existe" class="register__error">El nick ya existe</span>
             </div>
             <div class="register__inputs-container">
-                <label class="register__label" for="">Email:</label>
+                <label class="register__label" for="">Email: <span class="obligatorio">*</span></label>
                 <input class="register__input" type="email" placeholder="Email" [(ngModel)]="usuario.email"
                     name="correo">
                 <span id="error-email" class="register__error">El formato del correo electrónico es incorrecto</span>
@@ -42,7 +42,7 @@
 
         <div class="register__inputs-group">
             <div class="register__inputs-container">
-                <label class="register__label" for="">Password:</label>
+                <label class="register__label" for="">Password: <span class="obligatorio">*</span></label>
                 <input class="register__input" type="password" placeholder="Password" [(ngModel)]="usuario.password"
                     name="contrasena">
                 <span id="error-password" class="register__error">La contraseña debe contener entre 8 y 20</span>
@@ -51,7 +51,7 @@
                 <label class="register__label" for="">Role:</label>
                 <select class="register__input" [(ngModel)]="usuario.role" name="role">
                     <option value="">Select a role</option>
-                    <option value="role 1">Role 1</option>
+                    <option value="Superhéroe">Superhéroe</option>
                     <option value="role 2">Role 2</option>
                     <option value="role 3">Role 3</option>
                 </select>

@@ -135,6 +135,7 @@
     <div id="following-modal">
         <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
         <div class="following-container">
+            <h3>Followers</h3>
             <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
             <ng-container *ngIf="resUsuario.following.length != 0; else sinFollowings">
                 <div class="following__user" *ngFor="let following of resUsuario.following"
@@ -155,6 +156,7 @@
     <div id="followers-modal">
         <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
         <div class="followers-container">
+            <h3>Followers</h3>
             <img src="../../../assets/img/close-black.svg" class="icon__close" (click)="cerrarModal($event)">
             <ng-container *ngIf="resUsuario.followers.length != 0; else sinFollowers">
                 <div class="followers__user" *ngFor="let followers of resUsuario.followers"

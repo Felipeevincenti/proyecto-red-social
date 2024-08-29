@@ -51,6 +51,10 @@
     background: rgb(1, 56, 167);
 }
 
+.obligatorio {
+    color: #f00;
+}
+
 .error {
     color: red;
     border: 1px solid red;

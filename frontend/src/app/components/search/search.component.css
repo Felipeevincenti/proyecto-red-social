@@ -16,7 +16,8 @@
 }
 
 .search__input-img {
-    height: 60%;
+    height: 50%;
+    filter: contrast(0.3);
     position: absolute;
     left: 10px;
 }
@@ -28,7 +29,7 @@
     padding: 0 15px;
     padding-left: 40px;
     outline: none;
-    border: 1px solid #000;
+    border: 1px solid #aaa;
 }
 
 .search__profiles {
@@ -45,7 +46,7 @@
     display: flex;
     align-items: center;
     position: relative;
-    border: 1px solid #000;
+    border: 1px solid #aaa;
     background: #fff;
 }
 
