@@ -11,7 +11,7 @@
 
   <header id="header">
 
-    <a class="header__logo" routerLink="/feed" (click)="cerrar()">Feed</a>
+    <a class="header__logo" [routerLink]="usuariosService.loggedIn() ? '/feed' : '/login'" (click)="cerrar()">Feed</a>
 
     <ul class="header__ingresar">
 

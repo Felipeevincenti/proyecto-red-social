@@ -53,6 +53,7 @@ export class AppComponent {
     this.usuariosService.logOut();
     const usuarioVacio = this.usuariosService.vaciarUsuario(this.usuario);
     this.usuario = usuarioVacio;
+    window.location.href = '/login';
   };
 
   public desplegar() {

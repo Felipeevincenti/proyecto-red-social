@@ -25,6 +25,7 @@
                     <div class="publicacion__image-container">
                         <img class="publicacion__image" src="{{url+'/publication/media/'+publicacion.file}}" alt="">
                     </div>
+                    <p class="publicacion__texto" *ngIf="publicacion.text">{{publicacion.text}}</p>
                 </div>
             </div>
         </ng-container>

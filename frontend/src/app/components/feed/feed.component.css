@@ -2,49 +2,96 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
-    padding: 50px;
+    gap: 40px;
+    padding: 30px 0;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.publicaciones__publicacion {
+    width: 100%;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glass);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.publicaciones__publicacion:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .publicacion__info {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 15px 0px;
+    gap: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-glass);
 }
 
 .publicacion__info-avatar-container {
     cursor: pointer;
     overflow: hidden;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #aaa;
-    border-radius: 50%;
-    background: #fff;
+    border-radius: var(--radius-full);
+    background: var(--bg-primary);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.publicacion__info-avatar-container:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .publicacion__info-avatar {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.publicacion__info-nick {}
+.publicacion__info-nick {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
 
 .publicacion__image-container {
-    overflow: hidden;
-    width: 600px;
-    height: 600px;
+    width: 100%;
+    max-height: 700px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #aaa;
-    background: #fff;
+    background: #000;
+    overflow: hidden;
 }
 
 .publicacion__image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
+    max-height: 700px;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.publicaciones__publicacion:hover .publicacion__image {
+    transform: scale(1.02);
+}
+
+.publicacion__texto {
+    font-size: 15px;
+    color: var(--text-primary);
+    text-align: left;
+    padding: 15px 20px;
+    margin: 0;
+    word-wrap: break-word;
 }

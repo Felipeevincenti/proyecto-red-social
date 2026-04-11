@@ -55,6 +55,11 @@
             <input id="cambiarImg__input" class="cambiarImg__input" type="file" accept=".png, .jpeg, .jpg, .png"
                 (change)="obtenerImagenAvatar($event)" name="image">
 
+            <!-- PREVISUALIZACION -->
+            <div class="image-preview" *ngIf="previewAvatarUrl">
+                <img [src]="previewAvatarUrl" alt="Preview">
+            </div>
+
             <input class="cambiarImg__submit" type="submit" value="Change" (click)="cerrarModal($event)">
 
         </form>
@@ -110,6 +115,12 @@
                 Image</label>
             <input id="crearPublicacion__input" class="crearPublicacion__input" type="file"
                 accept=".png, .jpeg, .jpg, .png" (change)="obtenerImagenPublicacion($event)" name="image">
+            
+            <!-- PREVISUALIZACION -->
+            <div class="image-preview" *ngIf="previewPublicacionUrl">
+                <img [src]="previewPublicacionUrl" alt="Preview">
+            </div>
+
             <textarea class="crearPublicacion__textarea" placeholder="Publication description" name="text"
                 [(ngModel)]="infoPublicacion.text"></textarea>
             <input class="crearPublicacion__submit" type="submit" value="Create" (click)="cerrarModal($event)">

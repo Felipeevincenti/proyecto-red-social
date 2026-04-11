@@ -58,32 +58,27 @@ export class RegisterComponent {
       return cantidadPalabras;
     };
 
-    if (!this.usuario.name || !this.usuario.surname || !this.usuario.nick || !this.usuario.email || !this.usuario.password) {
-      inputNombre?.classList.add('error')
-      inputApellido?.classList.add('error')
-      inputNick?.classList.add('error')
-      inputCorreo?.classList.add('error')
-      inputContrasena?.classList.add('error')
-      return
-    };
+    let hasErrors = false;
 
-    inputNombre?.classList.remove('error');
-    inputApellido?.classList.remove('error')
-    inputNick?.classList.remove('error')
-    inputCorreo?.classList.remove('error')
-    inputContrasena?.classList.remove('error')
+    if (!this.usuario.name) { inputNombre?.classList.add('error'); hasErrors = true; } else { inputNombre?.classList.remove('error'); }
+    if (!this.usuario.surname) { inputApellido?.classList.add('error'); hasErrors = true; } else { inputApellido?.classList.remove('error'); }
+    if (!this.usuario.nick) { inputNick?.classList.add('error'); hasErrors = true; } else { inputNick?.classList.remove('error'); }
+    if (!this.usuario.email) { inputCorreo?.classList.add('error'); hasErrors = true; } else { inputCorreo?.classList.remove('error'); }
+    if (!this.usuario.password) { inputContrasena?.classList.add('error'); hasErrors = true; } else { inputContrasena?.classList.remove('error'); }
+
+    if (hasErrors) return;
 
     function mostrarError(condicion: any, input: any, span: any) {
       if (condicion) {
-        input?.classList.remove('success');
         input?.classList.add('error');
         if (span) {
           (span as HTMLElement).style.display = "block"
         }
-        return
-      };
-      input?.classList.add('success');
-      (span as HTMLElement).style.display = "none";
+        hasErrors = true;
+      } else {
+        input?.classList.remove('error');
+        (span as HTMLElement).style.display = "none";
+      }
     }
 
     mostrarError(contarPalabras(this.usuario.name) > 2, inputNombre, errorNombre);
@@ -91,6 +86,8 @@ export class RegisterComponent {
     mostrarError(contarLetras(this.usuario.nick) < 4 || contarLetras(this.usuario.nick) > 20, inputNick, errorNick);
     mostrarError(!emailFormat.test(this.usuario.email), inputCorreo, errorCorreo);
     mostrarError(this.usuario.password.length < 8 || this.usuario.password.length > 20, inputContrasena, errorContrasena);
+
+    if (hasErrors) return;
 
     this.usuariosService.registrarUsuario(this.usuario).subscribe(
       res => {
@@ -112,12 +109,10 @@ export class RegisterComponent {
       err => {
         console.log(err);
         if (err.error.message == "El nick ya existe") {
-          inputNick?.classList.remove('success');
           inputNick?.classList.add('error');
           (errorNickExiste as HTMLElement).style.display = "block";
         }
         else if (err.error.message == "El email ya existe") {
-          inputCorreo?.classList.remove('success');
           inputCorreo?.classList.add('error');
           (errorCorreoExiste as HTMLElement).style.display = "block";
         }

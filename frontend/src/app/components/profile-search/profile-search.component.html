@@ -32,7 +32,7 @@
 
                 <ng-template #followYouTemplate>
                     <ng-container *ngIf="!iFollow && followYou; else followTemplate">
-                        <button class="info__unfollow" (click)="follow()" name="followed">Seguir también</button>
+                        <button class="info__follow" (click)="follow()" name="followed">Seguir también</button>
                     </ng-container>
                 </ng-template>
 
@@ -60,8 +60,10 @@
             <img src="../../../assets/img/close.svg" class="icon__close" (click)="cerrarModal($event)">
 
             <div class="infoImagen__img-container">
-                <img class="infoImgen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
+                <img class="infoImagen__img" src="{{url+'/publication/media/'+srcImg}}" alt="">
             </div>
+
+            <p class="infoImagen__p" *ngIf="text">{{text}}</p>
 
         </div>
 

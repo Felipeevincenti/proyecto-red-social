@@ -88,8 +88,12 @@ exports.remove = (req, res) => {
                 });
             }
 
-            const imagePath = path.join(__dirname, '../uploads/publications', publicationRemove.file);
-            fs.unlinkSync(imagePath);
+            if (publicationRemove.file) {
+                const imagePath = path.join(__dirname, '../uploads/publications', publicationRemove.file);
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                }
+            }
 
             return res.status(200).send({
                 status: "success",

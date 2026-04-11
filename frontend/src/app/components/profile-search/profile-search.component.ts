@@ -65,6 +65,7 @@ export class ProfileSearchComponent implements OnInit {
   }
 
   public srcImg = "";
+  public text = "";
 
   public profile(id: any) {
     this.usuariosService.profile(this.userId).subscribe(
@@ -194,6 +195,7 @@ export class ProfileSearchComponent implements OnInit {
 
     if (infoImgModal && main) {
       this.srcImg = publication.file;
+      this.text = publication.text;
       window.scroll(0, 0)
       document.body.style.overflow = "hidden";
       main.style.filter = "blur(10px)";
@@ -206,6 +208,7 @@ export class ProfileSearchComponent implements OnInit {
     const main = document.getElementById("main");
     const infoImgModal = document.getElementById("infoImagen-modal");
     this.srcImg = "";
+    this.text = "";
 
     if (event.target.classList != "icon__close") {
       return;

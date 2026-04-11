@@ -3,37 +3,75 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 600px;
-}
-
-.login__input {
-    width: 200px;
-    margin: 0 auto;
-    padding: 10px;
-    border: none;
-    outline: none;
-    background: #bbb;
+    margin: 50px auto;
+    width: 400px;
+    padding: 40px;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glass);
 }
 
 .login__label {
-    color: #000;
-    margin: 5px 20px;
-    margin-top: 30px;
+    color: var(--text-primary);
+    font-weight: 500;
+    align-self: flex-start;
+    margin: 15px 0 8px 0;
+    font-size: 14px;
+}
+
+.login__input {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.login__input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.login__input::placeholder {
+    color: var(--text-secondary);
 }
 
 .login__input-submit {
-    font-size: 18px;
+    margin-top: 30px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
     color: #fff;
-    margin: 15px auto;
-    padding: 12px 40px;
+    padding: 14px;
     border: none;
-    border-radius: 10px;
-    background: rgb(1, 56, 167);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
+}
+
+.login__input-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
 }
 
 .login__error {
     display: none;
-    color: rgb(254, 21, 21);
-    margin-top: 15px;
+    color: var(--error);
+    font-size: 13px;
+    margin-top: 10px;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    width: 100%;
+    text-align: center;
 }

@@ -58,6 +58,9 @@ export class ProfileComponent implements OnInit {
 
   public idDelete = "";
 
+  public previewAvatarUrl: string | ArrayBuffer | null = null;
+  public previewPublicacionUrl: string | ArrayBuffer | null = null;
+
   public ngOnInit() {
     location.reload;
     this.profile();
@@ -68,6 +71,10 @@ export class ProfileComponent implements OnInit {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.usuario.image = file;
+
+      const reader = new FileReader();
+      reader.onload = e => this.previewAvatarUrl = reader.result;
+      reader.readAsDataURL(file);
     };
   };
 
@@ -251,19 +258,30 @@ export class ProfileComponent implements OnInit {
     const followingModal = document.getElementById("following-modal");
     const followersModal = document.getElementById("followers-modal");
 
-    const inputFile = document.getElementById("cambiarImg__input");
-
-    if (event.target.classList != "icon__close" && event.target.classList != "icon__close edit__profile" && inputFile instanceof HTMLInputElement && inputFile.files && inputFile.files.length === 0) {
-      return;
+    // Fix: close logic
+    const isCloseBtn = event.target.classList.contains("icon__close") || event.target.classList.contains("edit__profile");
+    
+    // Si no es el boton de cerrar, verificamos si es un boton de submit de form
+    if (!isCloseBtn) {
+        if (event.target.classList.contains("cambiarImg__submit")) {
+            const inputFile = document.getElementById("cambiarImg__input") as HTMLInputElement;
+            if (!inputFile || !inputFile.files || inputFile.files.length === 0) return;
+        }
+        else if (event.target.classList.contains("crearPublicacion__submit")) {
+            const inputFile = document.getElementById("crearPublicacion__input") as HTMLInputElement;
+            if (!inputFile || !inputFile.files || inputFile.files.length === 0) return;
+        }
     }
 
-    if (event.target.classList == "icon__close edit__profile") {
+    if (event.target.classList.contains("edit__profile")) {
       this.profile()
     }
 
     if (cambiarImgModal && editarPerfilModal && crearPublicacionModal && infoImgModal && confirmar && followingModal && followersModal && main) {
       this.srcImg = "";
       this.idDelete = "";
+      this.previewAvatarUrl = null;
+      this.previewPublicacionUrl = null;
       document.body.style.overflow = "auto";
       cambiarImgModal.style.display = "none";
       editarPerfilModal.style.display = "none";
@@ -290,6 +308,10 @@ export class ProfileComponent implements OnInit {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.infoPublicacion.image = file;
+
+      const reader = new FileReader();
+      reader.onload = e => this.previewPublicacionUrl = reader.result;
+      reader.readAsDataURL(file);
     };
   };
 
